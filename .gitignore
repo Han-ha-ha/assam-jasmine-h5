@@ -1,0 +1,18 @@
+# 本地资料、设计源文件和版本归档不进入线上仓库
+/版本归档/
+/素材/*.psd
+/素材2/*.jpg
+/素材2/*.md
+/素材2/**/源文件/
+/字体文件/*.ttf
+/字体文件/SourceHanSansCN-VF.woff2
+/qa-*.png
+/H5项目交接文档.md
+/整套效果图.pdf
+/H5示意-*.pdf
+/H5参考.pptx
+
+# 本地服务、编辑器和系统文件
+.DS_Store
+Thumbs.db
+node_modules/

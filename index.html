@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#eaf6df" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="在好心情音乐会现场找到5杯茉莉奶绿，参与抽奖赢广州站电子门票。" />
+    <title>找奶绿 赢门票｜好心情音乐会广州站</title>
+    <link rel="icon" type="image/png" href="%E7%B4%A0%E6%9D%90/logo.png" />
+    <link rel="stylesheet" href="styles.css?v=20260827-ui-complete-r1" />
+    <!-- 百度统计：客户提供完整异步统计代码后插入此处。 -->
+  </head>
+  <body>
+    <div id="loading" class="loading" aria-live="polite">
+      <div class="loading__flower" aria-hidden="true">✿</div>
+      <p>好心情正在加载</p>
+      <div class="loading__track"><i id="loadingBar"></i></div>
+      <span id="loadingText">0%</span>
+    </div>
+
+    <main id="app" class="app" aria-live="polite">
+      <section id="page-home" class="page page--home is-active" data-page="home" aria-hidden="false">
+        <div class="home__wash"></div>
+        <div class="petal petal--1">✦</div>
+        <div class="petal petal--2">✿</div>
+        <div class="petal petal--3">✦</div>
+        <header class="brand-lockup">
+          <img src="%E7%B4%A0%E6%9D%90/logo.png" alt="统一阿萨姆茉莉奶绿" />
+          <span>好心情音乐会 · 广州站</span>
+        </header>
+
+        <div class="home__hero">
+          <p class="eyebrow">茉莉奶绿寻味之旅</p>
+          <h1><span>找奶绿</span><em>赢门票</em></h1>
+          <p class="home__subtitle">在音乐会现场找到 5 杯茉莉奶绿<br />解锁幸运大抽奖</p>
+          <div class="hero-bottle" aria-hidden="true">
+            <div class="hero-bottle__cap"></div>
+            <div class="hero-bottle__body">
+              <span>统一</span>
+              <strong>茉莉奶绿</strong>
+              <small>JASMINE MILK TEA</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="home__actions">
+          <button id="startBtn" class="primary-btn primary-btn--large" type="button">开始探索</button>
+          <button class="text-btn" type="button" data-open-modal="rules">活动规则</button>
+        </div>
+        <p class="home__deadline">活动时间：即日起－2026年9月16日12:00</p>
+      </section>
+
+      <section id="page-game" class="page page--game" data-page="game" aria-hidden="true">
+        <header class="game-hud">
+          <button class="icon-btn" type="button" data-go-home aria-label="返回首页">‹</button>
+          <div class="game-progress">
+            <div class="game-progress__line">
+              <i id="progressFill"></i>
+              <b id="progressPercent">0%</b>
+            </div>
+            <div id="progressSteps" class="game-progress__steps" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <p><span id="foundCount">0</span>/5 已找到</p>
+          </div>
+          <button id="soundBtn" class="icon-btn" type="button" aria-label="切换声音">♪</button>
+        </header>
+
+        <div id="sceneViewport" class="scene-viewport">
+          <div id="scene" class="scene" aria-label="可拖动探索的好心情音乐会场景">
+            <div class="scene__sky"><i></i><i></i><i></i></div>
+            <div class="scene__ground"></div>
+            <div class="scene__path scene__path--one"></div>
+            <div class="scene__path scene__path--two"></div>
+
+            <div class="zone zone--stage">
+              <span class="zone__tag">奇妙舞台</span>
+              <div class="stage-arch"><b>好心情音乐会</b><small>一口轻松享 顺滑好心情</small></div>
+              <div class="stage-floor"></div>
+            </div>
+
+            <div class="zone zone--brand">
+              <span class="zone__tag">品牌展示区</span>
+              <div class="brand-wall"><b>茉莉花园</b><small>轻享常伴</small></div>
+            </div>
+
+            <div class="zone zone--interactive">
+              <span class="zone__tag">互动区</span>
+              <div class="booth"><b>寻味小铺</b><i></i><i></i><i></i></div>
+            </div>
+
+            <div class="zone zone--photo">
+              <span class="zone__tag">打卡区</span>
+              <div class="photo-frame"><b>好心情</b><small>在这里发生</small></div>
+            </div>
+
+            <div class="zone zone--audience">
+              <span class="zone__tag">观众区</span>
+              <div class="audience-dots" aria-hidden="true"></div>
+            </div>
+
+            <div class="flower-bed flower-bed--one" aria-hidden="true">✿ ✿ ✿ ✿</div>
+            <div class="flower-bed flower-bed--two" aria-hidden="true">✿ ✿ ✿</div>
+            <div class="flower-bed flower-bed--three" aria-hidden="true">✿ ✿ ✿ ✿ ✿</div>
+
+            <img
+              class="scene-asset scene-asset--tea-booth"
+              src="%E7%B4%A0%E6%9D%902/%E9%80%8F%E6%98%8E%E8%AF%95%E9%AA%8C/08-%E8%8C%89%E8%8E%89%E5%A5%B6%E8%8C%B6%E9%93%BA-%E9%80%8F%E6%98%8E%E8%AF%95%E9%AA%8C.png"
+              alt=""
+              aria-hidden="true"
+              draggable="false"
+            />
+
+            <button class="target target--1" type="button" data-target="1" aria-label="隐藏奶绿1">
+              <span class="mini-bottle"><i></i><b>茉莉<br />奶绿</b></span>
+            </button>
+            <button class="target target--2" type="button" data-target="2" aria-label="隐藏奶绿2">
+              <span class="mini-bottle"><i></i><b>茉莉<br />奶绿</b></span>
+            </button>
+            <button class="target target--3" type="button" data-target="3" aria-label="隐藏奶绿3">
+              <span class="mini-bottle"><i></i><b>茉莉<br />奶绿</b></span>
+            </button>
+            <button class="target target--4" type="button" data-target="4" aria-label="隐藏奶绿4">
+              <span class="mini-bottle"><i></i><b>茉莉<br />奶绿</b></span>
+            </button>
+            <button class="target target--5" type="button" data-target="5" aria-label="隐藏奶绿5">
+              <span class="mini-bottle"><i></i><b>茉莉<br />奶绿</b></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="zoom-tools" aria-label="场景缩放工具">
+          <button id="zoomIn" type="button" aria-label="放大">＋</button>
+          <button id="zoomOut" type="button" aria-label="缩小">－</button>
+        </div>
+        <div id="gameHint" class="game-hint">滑动屏幕，探索活动现场</div>
+        <div id="findFeedback" class="find-feedback" aria-hidden="true">
+          <span>✓</span>
+          <div><small>成功找到</small><strong id="findFeedbackCount">1/5</strong></div>
+        </div>
+      </section>
+
+      <section id="page-complete" class="page page--complete" data-page="complete" aria-hidden="true">
+        <div class="celebration" aria-hidden="true"><i>✦</i><i>✿</i><i>✦</i><i>✿</i><i>✦</i></div>
+        <header class="brand-lockup brand-lockup--small">
+          <img src="%E7%B4%A0%E6%9D%90/logo.png" alt="统一阿萨姆茉莉奶绿" />
+        </header>
+        <div class="complete-card">
+          <div class="complete-stamp">5/5</div>
+          <p class="eyebrow">全部成功</p>
+          <h2>完成 5 个奶绿</h2>
+          <div class="collection-row" aria-label="已收集5个茉莉奶绿">
+            <span>✓</span><span>✓</span><span>✓</span><span>✓</span><span>✓</span>
+          </div>
+          <div class="chance-ticket">
+            <small>已解锁</small>
+            <strong>3次</strong>
+            <span>免费抽奖机会</span>
+          </div>
+          <button id="toDrawBtn" class="primary-btn primary-btn--large" type="button">开始抽奖</button>
+        </div>
+      </section>
+
+      <section id="page-draw" class="page page--draw" data-page="draw" aria-hidden="true">
+        <header class="draw-header">
+          <button class="icon-btn icon-btn--green" type="button" data-go-home aria-label="返回首页">‹</button>
+          <div>
+            <p>GOOD MOOD CONCERT</p>
+            <h2>幸运大抽奖</h2>
+          </div>
+          <button class="icon-btn icon-btn--green" type="button" data-open-modal="rules" aria-label="活动规则">?</button>
+        </header>
+
+        <div class="draw-chances" aria-live="polite">剩余机会 <strong id="remainingCount">0</strong> 次</div>
+        <div class="wheel-wrap">
+          <div class="wheel-pointer" aria-hidden="true"></div>
+          <div id="wheel" class="wheel" aria-label="抽奖转盘">
+            <div class="wheel__label wheel__label--1">电子门票</div>
+            <div class="wheel__label wheel__label--2">好心情<br />继续加油</div>
+            <div class="wheel__label wheel__label--3">再接再厉</div>
+            <div class="wheel__label wheel__label--4">幸运奖池</div>
+          </div>
+          <button id="drawBtn" class="wheel-button" type="button" aria-live="polite">立即<br />抽奖</button>
+        </div>
+
+        <button id="shareBtn" class="share-entry" type="button">
+          <span>分享活动，每天额外获得 1 次</span>
+          <b id="shareStatus">去分享 ›</b>
+        </button>
+        <p class="draw-note">每人活动期间最多可获得40次参与机会</p>
+      </section>
+
+      <section id="page-form" class="page page--form" data-page="form" aria-hidden="true">
+        <header class="form-header">
+          <button class="icon-btn icon-btn--green" type="button" data-go-draw aria-label="返回抽奖页">‹</button>
+          <img src="%E7%B4%A0%E6%9D%90/logo.png" alt="统一阿萨姆茉莉奶绿" />
+          <span></span>
+        </header>
+        <div class="form-card">
+          <div class="ticket-badge">电子门票</div>
+          <p class="eyebrow">恭喜中奖！</p>
+          <h2>请填写以下信息</h2>
+          <p class="form-intro">信息用于电子票核验，请确保准确无误</p>
+          <form id="winnerForm" novalidate>
+            <label>
+              <span>姓名</span>
+              <input id="winnerName" name="name" type="text" maxlength="20" autocomplete="name" placeholder="请输入真实姓名" />
+              <em class="field-error"></em>
+            </label>
+            <label>
+              <span>手机号</span>
+              <input id="winnerPhone" name="phone" type="tel" maxlength="11" inputmode="numeric" autocomplete="tel" placeholder="抽奖前确认的手机号" readonly />
+              <em class="field-error"></em>
+            </label>
+            <label>
+              <span>身份证号</span>
+              <input id="winnerId" name="idNumber" type="text" maxlength="18" autocomplete="off" placeholder="凭身份证检票入场" />
+              <em class="field-error"></em>
+            </label>
+            <label class="agreement">
+              <input id="privacyAgree" type="checkbox" />
+              <i></i>
+              <span>我已阅读活动规则，并同意将以上信息用于本次活动兑奖</span>
+            </label>
+            <button id="submitInfoBtn" class="primary-btn primary-btn--large" type="submit">提交信息</button>
+          </form>
+          <div class="redeem-info">
+            <h3>兑奖说明</h3>
+            <p>中奖后请在24小时内填写姓名及手机号</p>
+            <p>工作人员将在3个工作日内电话联系您</p>
+            <p>音乐会门票为电子票，凭身份证检票入场</p>
+            <p>逾期未填写信息视为自动放弃</p>
+            <p>如有疑问请添加客服微信：xiaoyinjun666</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="guideModal" class="modal modal--guide" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+      <div class="guide-gesture" aria-hidden="true"><span>☝</span><i></i></div>
+      <h2 id="guideTitle">滑动探索活动现场</h2>
+      <p>找到散落在不同区域的 5 个茉莉奶绿</p>
+      <button id="guideOk" class="outline-btn" type="button">知道了</button>
+    </div>
+
+    <div id="rulesModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+      <div class="modal__mask" data-close-modal></div>
+      <div class="modal__panel modal__panel--rules">
+        <button class="modal__close" type="button" data-close-modal aria-label="关闭">×</button>
+        <h2 id="rulesTitle">活动规则</h2>
+        <ol class="rules-list">
+          <li><b>参与条件及方式：</b>活动期间，用户进入相应的活动页面即可参与，有机会获得活动奖品。</li>
+          <li><b>活动时间：</b>即日起-2026年9月16日12:00。</li>
+          <li><b>活动玩法：</b>在活动页面中按要求找到5个带有茉莉奶绿标识目标，即可拥有3次免费大转盘抽奖机会，每位用户在活动期间最多可获得40次参与抽奖机会，每次参与抽奖有机会获得一等奖。活动期间分享转发活动页面可额外获得1次抽奖机会（每天一次）。</li>
+          <li><b>开奖方式：</b>大转盘：点击立即抽奖按钮，根据抽奖页面提示获得相应奖品。</li>
+          <li><b>开奖时间：</b>即日起-2026年9月16日12:00。</li>
+          <li><b>奖品种类：</b>统一阿萨姆好心情音乐会（广州站）电子门票为虚拟奖。</li>
+          <li><b>奖品品名、价格及数量：</b>一等奖：统一阿萨姆好心情音乐会（广州站）电子门票288元/张，共计200张（每名用户限1张）。以上价格为参考价格，实际可能随市场价格浮动，最终兑换时不做差价补偿。音乐会门票仅限本人使用，禁止转售，一经发现，主办方有权取消门票权益。</li>
+          <li><b>兑奖时间：</b>即日起-2026年9月16日12:00。</li>
+          <li><b>兑奖条件及方式：</b>中奖者依活动规则指引完整填写相关信息并确保信息准确性，便于活动主办方给予兑奖。</li>
+          <li><b>奖品交付方式：</b>统一阿萨姆音乐会电子门票广州站兑换券需用户规定时间内填写个人信息，收到短信邀请后，活动当日凭身份证检票入场。</li>
+          <li><b>弃奖条件：</b>中奖者虚构、明显错误或未包含具体信息；使用虚构、明显错误的手机号码；中奖后未及时填写联系方式，均视为弃奖。</li>
+          <li><b>活动主办方：</b>广州统一企业有限公司，联系方式：【小饮君】客服微信号：xiaoyinjun666。</li>
+        </ol>
+      </div>
+    </div>
+
+    <div id="shareModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+      <div class="modal__mask" data-close-modal></div>
+      <div class="modal__panel modal__panel--share">
+        <button class="modal__close" type="button" data-close-modal aria-label="关闭">×</button>
+        <div class="share-icon" aria-hidden="true">↗</div>
+        <h2 id="shareTitle">分享好心情</h2>
+        <p>分享活动，每天额外获得1次抽奖机会</p>
+        <small>每天限获得1次</small>
+        <button id="confirmShareBtn" class="primary-btn" type="button">我分享了</button>
+      </div>
+    </div>
+
+    <div id="eligibilityModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="eligibilityTitle">
+      <div class="modal__mask" data-close-modal></div>
+      <div class="modal__panel modal__panel--eligibility">
+        <button class="modal__close" type="button" data-close-modal aria-label="关闭">×</button>
+        <div class="phone-check-icon" aria-hidden="true">✦</div>
+        <h2 id="eligibilityTitle">确认抽奖手机号</h2>
+        <p id="eligibilityText">每个手机号限中奖 1 张，请先确认本次抽奖手机号</p>
+        <form id="eligibilityForm" novalidate>
+          <label class="phone-check-field" for="eligibilityPhone">
+            <span>手机号</span>
+            <input id="eligibilityPhone" name="eligibilityPhone" type="tel" maxlength="11" inputmode="numeric" autocomplete="tel" placeholder="请输入11位手机号" />
+          </label>
+          <em id="eligibilityError" class="phone-check-error" aria-live="polite"></em>
+          <button id="eligibilityConfirmBtn" class="primary-btn" type="submit">确认并抽奖</button>
+        </form>
+        <small class="phone-check-note">仅在当前浏览器本地记录；清理缓存或更换设备后限制可能失效</small>
+      </div>
+    </div>
+
+    <div id="resultModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+      <div class="modal__mask"></div>
+      <div class="modal__panel modal__panel--result">
+        <div id="resultIcon" class="result-icon">✦</div>
+        <p id="resultEyebrow" class="eyebrow">GOOD MOOD</p>
+        <h2 id="resultTitle">开奖结果</h2>
+        <p id="resultText"></p>
+        <div id="ticketPreview" class="ticket-preview" hidden>
+          <small>一等奖</small>
+          <b>好心情音乐会</b>
+          <span>广州站电子门票 · 288元/张</span>
+        </div>
+        <button id="resultActionBtn" class="primary-btn" type="button">继续抽奖</button>
+      </div>
+    </div>
+
+    <div id="submitModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="submitTitle">
+      <div class="modal__mask" data-close-modal></div>
+      <div class="modal__panel modal__panel--submit">
+        <div class="submit-status-icon" aria-hidden="true">✓</div>
+        <p class="eyebrow">兑奖资料</p>
+        <h2 id="submitTitle">邮件已经准备好</h2>
+        <p>请在打开的邮件应用中确认并点击发送，才算完成资料提交。</p>
+        <small>返回本页面后，填写状态会保存在当前浏览器中。</small>
+        <button class="primary-btn" type="button" data-close-modal>我知道了</button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="screenReaderStatus" class="sr-only" aria-live="polite"></div>
+
+  <script src="app.js?v=20260827-release-2-r1"></script>
+  </body>
+</html>
