@@ -12,6 +12,8 @@ python -m http.server 8080
 
 然后访问 `http://localhost:8080/`。
 
+线上地址与日后自行修改概率、重新发布的步骤见 [上线与概率修改教程.md](./上线与概率修改教程.md)。
+
 ## 待替换配置
 
 - `app.js` 中的 `CONFIG.recipientEmail`：当前暂用 `2998458181@qq.com` 接收中奖信息，品牌方提供正式邮箱后再替换。
