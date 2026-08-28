@@ -1,14 +1,25 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260828-opening-kv-v5";
+  const APP_VERSION = "20260829-beijing-probability-schedule-v1";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
     winnerPhonesStorageKey: "assam-jasmine-winning-phones-v1",
     recipientEmail: "2998458181@qq.com",
-    // 正式发布概率：2%。修改后需重新发布 GitHub Pages 才会对访客生效。
-    winProbability: 0.02,
+    // 所有边界均为北京时间（UTC+8）；中奖窗口以外的时间概率一律为 0。
+    winProbabilitySchedule: [
+      {
+        startAt: "2026-09-05T12:00:00+08:00",
+        endAt: "2026-09-06T19:00:00+08:00",
+        probability: 1 / 400000,
+      },
+      {
+        startAt: "2026-09-12T12:00:00+08:00",
+        endAt: "2026-09-13T19:00:00+08:00",
+        probability: 1 / 600000,
+      },
+    ],
     initialChances: 3,
     maxEarnedChances: 40,
     sceneWidth: 1400,
@@ -25,6 +36,13 @@
   };
 
   let versionPrompted = false;
+
+  const getScheduledWinProbability = (now = Date.now()) => {
+    const activePeriod = CONFIG.winProbabilitySchedule.find(({ startAt, endAt }) => (
+      now >= Date.parse(startAt) && now < Date.parse(endAt)
+    ));
+    return activePeriod?.probability ?? 0;
+  };
 
   const checkAppVersion = async () => {
     try {
@@ -413,7 +431,8 @@
     isDrawing = true;
     state.remainingChances -= 1;
     state.drawCount += 1;
-    const won = !state.won && Math.random() < CONFIG.winProbability;
+    const winProbability = getScheduledWinProbability();
+    const won = !state.won && Math.random() < winProbability;
     if (won) {
       state.won = true;
       rememberWinningPhone(phone);
