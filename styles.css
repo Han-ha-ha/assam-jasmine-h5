@@ -188,20 +188,20 @@ input:focus-visible {
 .brand-lockup--small img { width: min(54vw, 280px); }
 
 .page--home {
-  background: url("%E7%B4%A0%E6%9D%902/%E8%8C%89%E8%8E%89%E5%A5%B6%E7%BB%BFKV%E9%80%9A%E7%94%A8%EF%BC%88%E6%9B%B4%E6%96%B01023%EF%BC%89/opening-kv-9x16.webp") center / cover no-repeat #c9f2ee;
+  background: url("%E7%B4%A0%E6%9D%902/%E5%BC%80%E5%9C%BAKV-PSD%E8%A3%81%E5%88%87%E8%AF%95%E7%89%88/opening-kv-psd-9x16-v5.webp") center / cover no-repeat #c9e8f4;
 }
 
 /* 全面屏：切换到为细长比例单独裁切的 KV，避免二次裁掉右下木牌。 */
 @media (min-aspect-ratio: 23 / 51) and (max-aspect-ratio: 10 / 19) {
   .page--home {
-    background-image: url("%E7%B4%A0%E6%9D%902/%E8%8C%89%E8%8E%89%E5%A5%B6%E7%BB%BFKV%E9%80%9A%E7%94%A8%EF%BC%88%E6%9B%B4%E6%96%B01023%EF%BC%89/opening-kv-9x19-5.webp");
+    background-image: url("%E7%B4%A0%E6%9D%902/%E5%BC%80%E5%9C%BAKV-PSD%E8%A3%81%E5%88%87%E8%AF%95%E7%89%88/opening-kv-psd-9x19-5-v5.webp");
   }
 }
 
 /* 细长安卓：使用 9:20 构图，产品仍尽量靠中，木牌留在右下安全区。 */
 @media (max-aspect-ratio: 23 / 51) {
   .page--home {
-    background-image: url("%E7%B4%A0%E6%9D%902/%E8%8C%89%E8%8E%89%E5%A5%B6%E7%BB%BFKV%E9%80%9A%E7%94%A8%EF%BC%88%E6%9B%B4%E6%96%B01023%EF%BC%89/opening-kv-9x20.webp");
+    background-image: url("%E7%B4%A0%E6%9D%902/%E5%BC%80%E5%9C%BAKV-PSD%E8%A3%81%E5%88%87%E8%AF%95%E7%89%88/opening-kv-psd-9x20-v5.webp");
   }
 }
 

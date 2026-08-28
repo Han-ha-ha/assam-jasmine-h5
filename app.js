@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  const APP_VERSION = "20260828-opening-kv-v5";
+
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
     winnerPhonesStorageKey: "assam-jasmine-winning-phones-v1",
@@ -15,11 +17,33 @@
     loadingTimeout: 4500,
     preloadAssets: [
       "素材/logo.png",
-      "素材2/茉莉奶绿KV通用（更新1023）/opening-kv-9x16.webp",
-      "素材2/茉莉奶绿KV通用（更新1023）/opening-kv-9x19-5.webp",
-      "素材2/茉莉奶绿KV通用（更新1023）/opening-kv-9x20.webp",
+      "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x16-v5.webp",
+      "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x19-5-v5.webp",
+      "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x20-v5.webp",
       "素材2/透明试验/08-茉莉奶茶铺-透明试验.png",
     ],
+  };
+
+  let versionPrompted = false;
+
+  const checkAppVersion = async () => {
+    try {
+      const versionUrl = new URL("version.json", document.baseURI);
+      versionUrl.searchParams.set("_", Date.now().toString());
+      const response = await fetch(versionUrl, { cache: "no-store" });
+      if (!response.ok) return;
+      const remote = await response.json();
+      if (!remote.version || remote.version === APP_VERSION || versionPrompted) return;
+
+      versionPrompted = true;
+      if (window.confirm("发现新版本，请刷新后继续体验。\n\n点击“确定”立即刷新。")) {
+        const nextUrl = new URL(window.location.href);
+        nextUrl.searchParams.set("v", remote.version);
+        window.location.replace(nextUrl.href);
+      }
+    } catch {
+      // 离线或网络波动时不打断当前体验，恢复联网后再次检查。
+    }
   };
 
   const defaultState = () => ({
@@ -790,4 +814,9 @@
   syncWinnerPhoneField();
   updateHomeUI();
   runLoading();
+  checkAppVersion();
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") checkAppVersion();
+  });
+  window.setInterval(checkAppVersion, 60000);
 })();
