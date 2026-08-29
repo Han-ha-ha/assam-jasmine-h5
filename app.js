@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260829-beijing-probability-schedule-v1";
+  const APP_VERSION = "20260829-hidden-bottle-feedback-v8";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
@@ -22,8 +22,8 @@
     ],
     initialChances: 3,
     maxEarnedChances: 40,
-    sceneWidth: 1400,
-    sceneHeight: 1900,
+    sceneWidth: 2800,
+    sceneHeight: 6000,
     loadingMinDuration: 650,
     loadingTimeout: 4500,
     preloadAssets: [
@@ -31,7 +31,17 @@
       "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x16-v5.webp",
       "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x19-5-v5.webp",
       "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x20-v5.webp",
-      "素材2/透明试验/08-茉莉奶茶铺-透明试验.png",
+      "素材3/web/scene-ground.webp",
+      "素材3/web/zone-garden.webp",
+      "素材3/web/zone-support.webp",
+      "素材3/web/zone-main-stage.webp",
+      "素材3/web/zone-beat.webp",
+      "素材3/web/zone-tea-shop.webp",
+      "素材3/web/zone-cup-booth.webp",
+      "素材3/web/zone-flower-arch.webp",
+      "素材3/web/zone-music-quiz.webp",
+      "素材3/web/hidden-bottle.webp",
+      "素材3/门票图.png",
     ],
   };
 
@@ -442,7 +452,14 @@
     announce("抽奖开始，请稍候");
 
     beep("spin");
-    wheelRotation += 1440 + Math.floor(Math.random() * 360) + (won ? 0 : 70);
+    const wheelSegmentCount = 8;
+    const segmentAngle = 360 / wheelSegmentCount;
+    const targetSegment = won ? 0 : 1 + Math.floor(Math.random() * (wheelSegmentCount - 1));
+    const targetCenterAngle = targetSegment * segmentAngle + segmentAngle / 2;
+    const desiredRotation = (360 - targetCenterAngle) % 360;
+    const currentRotation = ((wheelRotation % 360) + 360) % 360;
+    const landingDelta = (desiredRotation - currentRotation + 360) % 360;
+    wheelRotation += 1440 + landingDelta;
     $("#wheel").style.transform = `rotate(${wheelRotation}deg)`;
 
     window.setTimeout(() => {
@@ -613,9 +630,10 @@
       const viewH = viewport.clientHeight;
       minScale = Math.max(viewW / CONFIG.sceneWidth, viewH / CONFIG.sceneHeight);
       maxScale = Math.max(1.05, minScale * 2.3);
-      scale = Math.min(maxScale, minScale * 1.08);
+      const entranceScale = (viewW / CONFIG.sceneWidth) * 1.72;
+      scale = Math.min(maxScale, Math.max(minScale * 1.08, entranceScale));
       x = (viewW - CONFIG.sceneWidth * scale) / 2;
-      y = Math.min(0, 92 - 235 * scale);
+      y = viewH - CONFIG.sceneHeight * scale;
       render();
     };
 
@@ -635,6 +653,7 @@
     };
 
     viewport.addEventListener("pointerdown", (event) => {
+      if (event.target.closest(".target")) return;
       viewport.setPointerCapture(event.pointerId);
       pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
       moved = false;
