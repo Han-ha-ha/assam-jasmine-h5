@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260829-mobile-drag-performance-v10";
+  const APP_VERSION = "20260829-composite-scene-v11";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
@@ -31,15 +31,8 @@
       "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x16-v5.webp",
       "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x19-5-v5.webp",
       "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x20-v5.webp",
-      "素材3/web/scene-ground.webp",
-      "素材3/web/zone-garden.webp",
-      "素材3/web/zone-support.webp",
-      "素材3/web/zone-main-stage.webp",
-      "素材3/web/zone-beat.webp",
-      "素材3/web/zone-tea-shop.webp",
+      "素材3/web/scene-composite.webp",
       "素材3/web/zone-cup-booth.webp",
-      "素材3/web/zone-flower-arch.webp",
-      "素材3/web/zone-music-quiz.webp",
       "素材3/web/hidden-bottle.webp",
       "素材3/门票图.png",
     ],

@@ -749,15 +749,10 @@ input:focus-visible {
   width: 2800px;
   height: 6000px;
   background-color: #4b704a;
-  background-image: url("素材3/web/scene-ground.webp");
-  background-position: center top;
-  background-size: 100% auto;
-  background-repeat: repeat-y;
   isolation: isolate;
 }
 
-.scene-map,
-.scene-map__light,
+.scene-composite,
 .scene-zone {
   position: absolute;
   display: block;
@@ -767,19 +762,7 @@ input:focus-visible {
   -webkit-user-drag: none;
 }
 
-.scene-map {
-  display: none;
-}
-
-.scene-map__light {
-  z-index: 1;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 90%, rgba(239,255,204,.22), transparent 18%),
-    radial-gradient(ellipse at 50% 52%, rgba(239,255,204,.18), transparent 20%),
-    radial-gradient(ellipse at 50% 10%, rgba(239,255,204,.2), transparent 18%),
-    linear-gradient(90deg, rgba(18,52,28,.1), transparent 30%, rgba(255,255,255,.08) 50%, transparent 70%, rgba(18,52,28,.12));
-}
+.scene-composite { z-index: 1; inset: 0; width: 2800px; height: 6000px; }
 
 .scene-zone {
   transform-origin: 50% 100%;
