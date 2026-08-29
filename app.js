@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260829-test-reset-v9";
+  const APP_VERSION = "20260829-mobile-drag-performance-v10";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
@@ -622,10 +622,16 @@
     let pinchStartDistance = 0;
     let pinchStartScale = 0;
     let moved = false;
+    let viewW = 0;
+    let viewH = 0;
+    let renderFrame = 0;
+
+    const updateViewportSize = () => {
+      viewW = viewport.clientWidth;
+      viewH = viewport.clientHeight;
+    };
 
     const clamp = () => {
-      const viewW = viewport.clientWidth;
-      const viewH = viewport.clientHeight;
       const sceneW = CONFIG.sceneWidth * scale;
       const sceneH = CONFIG.sceneHeight * scale;
       const minX = Math.min(0, viewW - sceneW);
@@ -634,30 +640,43 @@
       y = Math.min(0, Math.max(minY, y));
     };
 
-    const render = () => {
+    const renderNow = () => {
+      if (renderFrame) {
+        window.cancelAnimationFrame(renderFrame);
+        renderFrame = 0;
+      }
       clamp();
       scene.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
     };
 
+    const scheduleRender = () => {
+      if (renderFrame) return;
+      renderFrame = window.requestAnimationFrame(() => {
+        renderFrame = 0;
+        clamp();
+        scene.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+      });
+    };
+
     const reset = () => {
-      const viewW = viewport.clientWidth;
-      const viewH = viewport.clientHeight;
+      updateViewportSize();
       minScale = Math.max(viewW / CONFIG.sceneWidth, viewH / CONFIG.sceneHeight);
       maxScale = Math.max(1.05, minScale * 2.3);
       const entranceScale = (viewW / CONFIG.sceneWidth) * 1.72;
       scale = Math.min(maxScale, Math.max(minScale * 1.08, entranceScale));
       x = (viewW - CONFIG.sceneWidth * scale) / 2;
       y = viewH - CONFIG.sceneHeight * scale;
-      render();
+      renderNow();
     };
 
-    const setScale = (nextScale, centerX = viewport.clientWidth / 2, centerY = viewport.clientHeight / 2) => {
+    const setScale = (nextScale, centerX = viewW / 2, centerY = viewH / 2, deferRender = false) => {
       const previous = scale;
       scale = Math.min(maxScale, Math.max(minScale, nextScale));
       const ratio = scale / previous;
       x = centerX - (centerX - x) * ratio;
       y = centerY - (centerY - y) * ratio;
-      render();
+      if (deferRender) scheduleRender();
+      else renderNow();
     };
 
     const pointerDistance = () => {
@@ -690,7 +709,7 @@
         const distance = pointerDistance();
         if (pinchStartDistance > 0) {
           moved = true;
-          setScale(pinchStartScale * (distance / pinchStartDistance));
+          setScale(pinchStartScale * (distance / pinchStartDistance), viewW / 2, viewH / 2, true);
         }
       } else if (pointers.size === 1) {
         const dx = event.clientX - startX;
@@ -698,14 +717,15 @@
         if (Math.abs(dx) + Math.abs(dy) > 7) moved = true;
         x = originX + dx;
         y = originY + dy;
-        render();
+        scheduleRender();
         if (moved) $("#gameHint").classList.add("is-hidden");
       }
     });
 
     const endPointer = (event) => {
       pointers.delete(event.pointerId);
-      viewport.classList.remove("is-dragging");
+      renderNow();
+      if (pointers.size === 0) viewport.classList.remove("is-dragging");
       if (pointers.size === 1) {
         const remaining = [...pointers.values()][0];
         startX = remaining.x;

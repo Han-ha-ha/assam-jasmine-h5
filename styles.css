@@ -405,9 +405,8 @@ input:focus-visible {
   align-items: center;
   gap: 12px;
   padding: calc(var(--safe-top) + 4px) 14px 12px;
-  background: linear-gradient(180deg, rgba(247,251,235,.98), rgba(247,251,235,.88));
+  background: linear-gradient(180deg, #f7fbeb, rgba(247,251,235,.96));
   box-shadow: 0 5px 20px rgba(31,68,44,.12);
-  backdrop-filter: blur(8px);
 }
 
 .icon-btn {
@@ -493,7 +492,8 @@ input:focus-visible {
   overflow: hidden;
   transform-origin: 0 0;
   background: linear-gradient(#aee0ef 0 25%, #b9dd99 26% 100%);
-  will-change: transform;
+  contain: layout paint style;
+  backface-visibility: hidden;
 }
 
 /* 透明素材试验版：保留可分层布景，用通过 alpha 检查的场景切图验证景深。 */
@@ -857,6 +857,12 @@ input:focus-visible {
   width: 150px;
   height: 300px;
   filter: drop-shadow(0 12px 10px rgba(17, 54, 31, .38));
+}
+
+/* 拖动时停用透明大图的实时阴影，松手后恢复静态视觉。 */
+.scene-viewport.is-dragging .scene-zone,
+.scene-viewport.is-dragging .scene .target {
+  filter: none;
 }
 
 .scene .target img {
