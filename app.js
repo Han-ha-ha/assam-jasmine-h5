@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260829-hidden-bottle-feedback-v8";
+  const APP_VERSION = "20260829-test-reset-v9";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
@@ -121,6 +121,20 @@
     }
   };
 
+  // 临时测试入口：微信内置浏览器没有无痕模式时，用指定参数清除本机测试数据。
+  // 测试结束后删除此段逻辑，正式链接不会触发。
+  const resetTestProgress = () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("testReset") !== "1") return;
+    try {
+      localStorage.removeItem(CONFIG.storageKey);
+      localStorage.removeItem(CONFIG.winnerPhonesStorageKey);
+    } catch {
+      // 隐私模式或受限环境下无存储权限时，后续仍以默认状态启动。
+    }
+  };
+
+  resetTestProgress();
   let state = loadState();
   let currentPage = "home";
   let isDrawing = false;
