@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260830-home-panel-compact-v15";
+  const APP_VERSION = "20260830-home-kv-no-ghost-v16";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
