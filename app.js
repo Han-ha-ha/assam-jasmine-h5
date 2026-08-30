@@ -1,12 +1,14 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260829-composite-scene-v11";
+  const APP_VERSION = "20260830-win-test-50-v13";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
     winnerPhonesStorageKey: "assam-jasmine-winning-phones-v1",
     recipientEmail: "2998458181@qq.com",
+    // 临时测试配置：当前普通抽奖概率为 50%。正式上线前必须删除此项并恢复北京时间概率表。
+    temporaryWinProbability: 0.5,
     // 所有边界均为北京时间（UTC+8）；中奖窗口以外的时间概率一律为 0。
     winProbabilitySchedule: [
       {
@@ -28,9 +30,8 @@
     loadingTimeout: 4500,
     preloadAssets: [
       "素材/logo.png",
-      "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x16-v5.webp",
-      "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x19-5-v5.webp",
-      "素材2/开场KV-PSD裁切试版/opening-kv-psd-9x20-v5.webp",
+      "assets/home/guangzhou-kv-9x16.webp",
+      "assets/share/ticket-share-poster.jpg",
       "素材3/web/scene-composite.webp",
       "素材3/web/zone-cup-booth.webp",
       "素材3/web/hidden-bottle.webp",
@@ -41,6 +42,9 @@
   let versionPrompted = false;
 
   const getScheduledWinProbability = (now = Date.now()) => {
+    if (Number.isFinite(CONFIG.temporaryWinProbability)) {
+      return Math.max(0, Math.min(1, CONFIG.temporaryWinProbability));
+    }
     const activePeriod = CONFIG.winProbabilitySchedule.find(({ startAt, endAt }) => (
       now >= Date.parse(startAt) && now < Date.parse(endAt)
     ));
@@ -119,6 +123,7 @@
   const resetTestProgress = () => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("testReset") !== "1") return;
+    if (!/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)) return;
     try {
       localStorage.removeItem(CONFIG.storageKey);
       localStorage.removeItem(CONFIG.winnerPhonesStorageKey);
@@ -136,6 +141,7 @@
   let audioContext = null;
   let modalReturnFocus = null;
   let findFeedbackTimer = 0;
+  let bgmStarted = false;
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -205,9 +211,9 @@
     if (state.found.length === 5) {
       button.textContent = "继续抽奖";
     } else if (state.found.length > 0) {
-      button.textContent = `继续探索（${state.found.length}/5）`;
+      button.textContent = `继续找奶绿（${state.found.length}/5）`;
     } else {
-      button.textContent = "开始探索";
+      button.textContent = "开始找奶绿";
     }
   };
 
@@ -223,6 +229,7 @@
       updateGameUI();
     }
     if (name === "draw") updateDrawUI();
+    if (name === "share") updateShareUI();
     if (name === "form") syncWinnerPhoneField();
     if (name === "home") updateHomeUI();
     window.scrollTo(0, 0);
@@ -287,6 +294,24 @@
     (patterns[type] || patterns.tap).forEach(([frequency, offset, duration, wave, volume]) => {
       playNote(frequency, now + offset, duration, wave, volume);
     });
+  };
+
+  const syncBgm = () => {
+    const bgm = $("#bgm");
+    if (!bgm) return;
+    bgm.volume = 0.32;
+    if (state.soundOn && bgmStarted && document.visibilityState !== "hidden") {
+      bgm.play().catch(() => {
+        // 微信或浏览器阻止自动播放时，等待下一次用户点击后再尝试。
+      });
+    } else {
+      bgm.pause();
+    }
+  };
+
+  const startBgm = () => {
+    bgmStarted = true;
+    syncBgm();
   };
 
   const updateSoundButton = () => {
@@ -358,12 +383,19 @@
     $("#remainingCount").textContent = String(state.remainingChances);
     const sharedToday = state.lastShareDate === todayKey();
     const shareStatus = $("#shareStatus");
-    shareStatus.textContent = sharedToday ? "今日已获得" : "去分享 ›";
-    $("#shareBtn").disabled = sharedToday || state.totalEarned >= CONFIG.maxEarnedChances;
+    shareStatus.textContent = sharedToday ? "查看海报 ›" : "去分享 ›";
+    $("#shareBtn").disabled = false;
     $("#drawBtn").disabled = isDrawing || state.remainingChances <= 0;
     $("#drawBtn").innerHTML = isDrawing ? "抽奖<br />进行中" : "立即<br />抽奖";
     $(".wheel-wrap").classList.toggle("is-spinning", isDrawing);
     $(".wheel-wrap").setAttribute("aria-busy", String(isDrawing));
+  };
+
+  const updateShareUI = () => {
+    const sharedToday = state.lastShareDate === todayKey();
+    const nextButton = $("#shareNextBtn");
+    if (!nextButton) return;
+    nextButton.textContent = sharedToday ? "继续去分享" : "下一步：去分享";
   };
 
   const syncWinnerPhoneField = () => {
@@ -449,7 +481,10 @@
     state.remainingChances -= 1;
     state.drawCount += 1;
     const winProbability = getScheduledWinProbability();
-    const won = !state.won && Math.random() < winProbability;
+    const params = new URLSearchParams(window.location.search);
+    const forceLocalWin = /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)
+      && params.get("forceWin") === "1";
+    const won = !state.won && (forceLocalWin || Math.random() < winProbability);
     if (won) {
       state.won = true;
       rememberWinningPhone(phone);
@@ -524,12 +559,14 @@
   const claimShareChance = () => {
     if (state.lastShareDate === todayKey()) {
       showToast("今天已经获得过分享奖励了");
-      closeModal($("#shareModal"));
+      closeModal($("#shareGuideModal"));
+      showPage("draw");
       return;
     }
     if (state.totalEarned >= CONFIG.maxEarnedChances) {
       showToast("已达到40次参与机会的上限");
-      closeModal($("#shareModal"));
+      closeModal($("#shareGuideModal"));
+      showPage("draw");
       return;
     }
 
@@ -537,7 +574,8 @@
     state.remainingChances += 1;
     state.totalEarned += 1;
     saveState();
-    closeModal($("#shareModal"));
+    closeModal($("#shareGuideModal"));
+    showPage("draw");
     updateDrawUI();
     beep("found");
     vibrate(35);
@@ -748,6 +786,7 @@
   const bindEvents = () => {
     $("#startBtn").addEventListener("click", () => {
       ensureAudio();
+      startBgm();
       beep("tap");
       if (state.found.length === 5) {
         grantInitialChances();
@@ -772,12 +811,14 @@
       state.soundOn = !state.soundOn;
       saveState();
       updateSoundButton();
+      syncBgm();
       if (state.soundOn) beep("tap");
     });
 
     $("#toDrawBtn").addEventListener("click", () => showPage("draw"));
     $("#drawBtn").addEventListener("click", requestDraw);
-    $("#shareBtn").addEventListener("click", () => openModal("share"));
+    $("#shareBtn").addEventListener("click", () => { beep("tap"); showPage("share"); });
+    $("#shareNextBtn").addEventListener("click", () => { beep("tap"); openModal("shareGuide"); });
     $("#confirmShareBtn").addEventListener("click", claimShareChance);
     $("#eligibilityForm").addEventListener("submit", confirmEligibility);
     $("#eligibilityPhone").addEventListener("input", (event) => {
@@ -882,6 +923,7 @@
   checkAppVersion();
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") checkAppVersion();
+    syncBgm();
   });
   window.setInterval(checkAppVersion, 60000);
 })();

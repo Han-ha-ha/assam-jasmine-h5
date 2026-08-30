@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
     <meta name="theme-color" content="#eaf6df" />
     <meta name="format-detection" content="telephone=no" />
-    <meta name="description" content="在好心情音乐会现场找到5杯茉莉奶绿，参与抽奖赢广州站电子门票。" />
+    <meta name="description" content="在好心情音乐会现场找到5个茉莉奶绿，参与抽奖赢广州站电子门票。" />
     <title>找奶绿 赢门票｜好心情音乐会广州站</title>
     <link rel="icon" type="image/png" href="%E7%B4%A0%E6%9D%90/logo.png" />
-    <link rel="stylesheet" href="styles.css?v=20260829-composite-scene-v11" />
+    <link rel="stylesheet" href="styles.css?v=20260830-win-test-50-v13" />
     <!-- 百度统计：客户提供完整异步统计代码后插入此处。 -->
   </head>
   <body>
@@ -21,34 +21,19 @@
 
     <main id="app" class="app" aria-live="polite">
       <section id="page-home" class="page page--home is-active" data-page="home" aria-hidden="false">
-        <div class="home__wash"></div>
-        <div class="petal petal--1">✦</div>
-        <div class="petal petal--2">✿</div>
-        <div class="petal petal--3">✦</div>
-        <header class="brand-lockup">
-          <img src="%E7%B4%A0%E6%9D%90/logo.png" alt="统一阿萨姆茉莉奶绿" />
-          <span>好心情音乐会 · 广州站</span>
-        </header>
-
-        <div class="home__hero">
-          <p class="eyebrow">茉莉奶绿寻味之旅</p>
-          <h1><span>找奶绿</span><em>赢门票</em></h1>
-          <p class="home__subtitle">在音乐会现场找到 5 杯茉莉奶绿<br />解锁幸运大抽奖</p>
-          <div class="hero-bottle" aria-hidden="true">
-            <div class="hero-bottle__cap"></div>
-            <div class="hero-bottle__body">
-              <span>统一</span>
-              <strong>茉莉奶绿</strong>
-              <small>JASMINE MILK TEA</small>
-            </div>
-          </div>
+        <div class="home__visual">
+          <img
+            class="home__kv"
+            src="assets/home/guangzhou-kv-9x16.webp"
+            alt="统一阿萨姆好心情音乐会广州站，演出时间9月19日19点至21点，地点广州大学城体育中心2号副场"
+            draggable="false"
+          />
         </div>
-
-        <div class="home__actions">
-          <button id="startBtn" class="primary-btn primary-btn--large" type="button">开始探索</button>
+        <div class="home__function-panel">
+          <p><b>找到5个茉莉奶绿</b><span>赢音乐会门票</span></p>
+          <button id="startBtn" class="primary-btn primary-btn--large" type="button">开始找奶绿</button>
           <button class="text-btn" type="button" data-open-modal="rules">活动规则</button>
         </div>
-        <p class="home__deadline">活动时间：即日起－2026年9月16日12:00</p>
       </section>
 
       <section id="page-game" class="page page--game" data-page="game" aria-hidden="true">
@@ -110,7 +95,7 @@
         <div class="complete-card">
           <div class="complete-stamp">5/5</div>
           <p class="eyebrow">全部成功</p>
-          <h2>完成 5 个奶绿</h2>
+          <h2>成功找到5个茉莉奶绿</h2>
           <div class="collection-row" aria-label="已收集5个茉莉奶绿">
             <span>✓</span><span>✓</span><span>✓</span><span>✓</span><span>✓</span>
           </div>
@@ -157,6 +142,30 @@
           <b id="shareStatus">去分享 ›</b>
         </button>
         <p class="draw-note">每人活动期间最多可获得40次参与机会</p>
+      </section>
+
+      <section id="page-share" class="page page--share" data-page="share" aria-hidden="true">
+        <header class="share-page__header">
+          <button class="icon-btn icon-btn--green" type="button" data-go-draw aria-label="返回抽奖页">‹</button>
+          <div>
+            <p>GOOD MOOD CONCERT</p>
+            <h2>分享好心情</h2>
+          </div>
+          <span aria-hidden="true"></span>
+        </header>
+        <div class="share-page__body">
+          <p class="share-page__intro">长按海报保存到手机，分享活动每天额外获得1次抽奖机会</p>
+          <div class="share-poster-frame">
+            <img
+              id="sharePosterImage"
+              class="share-poster-image"
+              src="assets/share/ticket-share-poster.jpg"
+              alt="统一阿萨姆好心情音乐会广州站门票分享海报"
+            />
+          </div>
+          <p class="share-page__save-tip">请长按上方海报，选择“保存图片”</p>
+          <button id="shareNextBtn" class="primary-btn primary-btn--large" type="button">下一步：去分享</button>
+        </div>
       </section>
 
       <section id="page-form" class="page page--form" data-page="form" aria-hidden="true">
@@ -220,7 +229,7 @@
         <ol class="rules-list">
           <li><b>参与条件及方式：</b>活动期间，用户进入相应的活动页面即可参与，有机会获得活动奖品。</li>
           <li><b>活动时间：</b>即日起-2026年9月16日12:00。</li>
-          <li><b>活动玩法：</b>在活动页面中按要求找到5个带有茉莉奶绿标识目标，即可拥有3次免费大转盘抽奖机会，每位用户在活动期间最多可获得40次参与抽奖机会，每次参与抽奖有机会获得一等奖。活动期间分享转发活动页面可额外获得1次抽奖机会（每天一次）。</li>
+          <li><b>活动玩法：</b>在活动页面中找到5个隐藏的茉莉奶绿，即可拥有3次免费大转盘抽奖机会。每位用户在活动期间最多可获得40次参与抽奖机会，每次抽奖均有机会获得一等奖。保存并按页面提示分享活动海报，可额外获得1次抽奖机会（每天一次）。</li>
           <li><b>开奖方式：</b>大转盘：点击立即抽奖按钮，根据抽奖页面提示获得相应奖品。</li>
           <li><b>开奖时间：</b>即日起-2026年9月16日12:00。</li>
           <li><b>奖品种类：</b>统一阿萨姆好心情音乐会（广州站）电子门票为虚拟奖。</li>
@@ -234,15 +243,16 @@
       </div>
     </div>
 
-    <div id="shareModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
-      <div class="modal__mask" data-close-modal></div>
-      <div class="modal__panel modal__panel--share">
-        <button class="modal__close" type="button" data-close-modal aria-label="关闭">×</button>
-        <div class="share-icon" aria-hidden="true">↗</div>
-        <h2 id="shareTitle">分享好心情</h2>
-        <p>分享活动，每天额外获得1次抽奖机会</p>
-        <small>每天限获得1次</small>
-        <button id="confirmShareBtn" class="primary-btn" type="button">我分享了</button>
+    <div id="shareGuideModal" class="modal modal--share-guide" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="shareGuideTitle">
+      <div class="share-guide__prompt">
+        <div class="share-guide__arrow" aria-hidden="true">↗</div>
+        <h2 id="shareGuideTitle">点击右上角 ···</h2>
+        <p>发送给朋友或分享朋友圈</p>
+        <small>右上角分享的是活动链接；完整海报请从相册选择刚保存的图片。</small>
+      </div>
+      <div class="share-guide__actions">
+        <button id="confirmShareBtn" class="primary-btn" type="button">我已分享，领取机会</button>
+        <button class="outline-btn" type="button" data-close-modal>返回海报</button>
       </div>
     </div>
 
@@ -296,6 +306,8 @@
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <div id="screenReaderStatus" class="sr-only" aria-live="polite"></div>
 
-  <script src="app.js?v=20260829-composite-scene-v11"></script>
+    <audio id="bgm" src="素材3/遇见茉莉好心情_final_MMM(1).mp3" preload="none" loop></audio>
+
+  <script src="app.js?v=20260830-win-test-50-v13"></script>
   </body>
 </html>
