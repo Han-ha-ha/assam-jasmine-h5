@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260831-dual-kv-mail-sync-v21";
+  const APP_VERSION = "20260831-copy-mail-clean-copy-v22";
   const PAGE_PARAMS = new URLSearchParams(window.location.search);
   const HOME_KV_VARIANT = PAGE_PARAMS.get("kv") === "vertical" ? "vertical" : "landscape";
   const IS_WECHAT = /MicroMessenger/i.test(navigator.userAgent);
@@ -660,7 +660,7 @@
     mailLink.href = mailtoUrl;
     $("#submitTitle").textContent = IS_WECHAT ? "请打开邮件并粘贴信息" : "中奖邮件已经准备好";
     $("#submitMailText").textContent = IS_WECHAT
-      ? "微信无法正确传递中文邮件正文，请先复制中奖信息，再打开邮件应用粘贴发送。"
+      ? "中奖信息已复制，请打开邮件应用后粘贴并发送。"
       : "页面会尝试唤起邮件应用；若没有响应，请点击下方按钮。";
     $("#submitMailNote").textContent = `收件邮箱：${CONFIG.recipientEmail}，仍需在邮件应用中确认发送。`;
 
