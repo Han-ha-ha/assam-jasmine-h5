@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260830-win-test-50-v13";
+  const APP_VERSION = "20260830-mobile-test-50-v14";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
@@ -123,7 +123,8 @@
   const resetTestProgress = () => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("testReset") !== "1") return;
-    if (!/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)) return;
+    const resetHosts = /^(localhost|127\.0\.0\.1|han-ha-ha\.github\.io)$/;
+    if (!resetHosts.test(window.location.hostname)) return;
     try {
       localStorage.removeItem(CONFIG.storageKey);
       localStorage.removeItem(CONFIG.winnerPhonesStorageKey);
