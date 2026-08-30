@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260830-landscape-home-polish-v18";
+  const APP_VERSION = "20260831-start-explore-v19";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
@@ -214,7 +214,7 @@
     } else if (state.found.length > 0) {
       button.textContent = `继续找奶绿（${state.found.length}/5）`;
     } else {
-      button.textContent = "开始找奶绿";
+      button.textContent = "开始探索";
     }
   };
 
