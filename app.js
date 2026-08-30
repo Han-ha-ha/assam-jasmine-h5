@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260831-start-explore-v19";
+  const APP_VERSION = "20260831-mail-launch-fallback-v20";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
@@ -142,6 +142,7 @@
   let audioContext = null;
   let modalReturnFocus = null;
   let findFeedbackTimer = 0;
+  let pendingWinnerMailText = "";
   let bgmStarted = false;
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -242,7 +243,7 @@
     modalReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
-    const focusTarget = $("button:not([disabled]), input:not([disabled])", modal);
+    const focusTarget = $("a[href], button:not([disabled]), input:not([disabled])", modal);
     window.setTimeout(() => focusTarget?.focus({ preventScroll: true }), 40);
   };
 
@@ -589,6 +590,25 @@
     if (errorElement) errorElement.textContent = message;
   };
 
+  const copyText = async (text) => {
+    if (!text) return false;
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand("copy");
+      textarea.remove();
+      return copied;
+    }
+  };
+
   const submitWinnerInfo = (event) => {
     event.preventDefault();
     const nameInput = $("#winnerName");
@@ -627,6 +647,10 @@
       "",
       "请品牌方工作人员核对并联系中奖者。",
     ].join("\n");
+    const mailtoUrl = `mailto:${CONFIG.recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    pendingWinnerMailText = `收件邮箱：${CONFIG.recipientEmail}\n主题：${subject}\n\n${body}`;
+    const mailLink = $("#mailOpenLink");
+    mailLink.href = mailtoUrl;
 
     state.submitted = true;
     saveState();
@@ -634,8 +658,8 @@
     openModal("submit");
     beep("complete");
     vibrate(45);
-    window.location.href = `mailto:${encodeURIComponent(CONFIG.recipientEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    showToast("请在邮件应用中确认发送中奖信息", 3200);
+    mailLink.click();
+    showToast("若微信未自动打开，请点击“打开邮件应用”", 3600);
   };
 
   const sceneController = (() => {
@@ -827,6 +851,10 @@
       setEligibilityState();
     });
     $("#winnerForm").addEventListener("submit", submitWinnerInfo);
+    $("#copyWinnerInfoBtn").addEventListener("click", async () => {
+      const copied = await copyText(pendingWinnerMailText);
+      showToast(copied ? "中奖信息已复制，请粘贴到邮件中发送" : "复制失败，请点击“打开邮件应用”");
+    });
     $$("#winnerForm input:not([type='checkbox'])").forEach((input) => input.addEventListener("input", () => {
       if (input.id === "winnerPhone") return;
       if (input.id === "winnerId") input.value = input.value.toUpperCase().replace(/[^0-9X]/g, "");
@@ -858,7 +886,7 @@
         return;
       }
       if (event.key !== "Tab" || !modal) return;
-      const focusable = $$("button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex='-1'])", modal)
+      const focusable = $$("a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex='-1'])", modal)
         .filter((element) => element.offsetParent !== null);
       if (!focusable.length) return;
       const first = focusable[0];

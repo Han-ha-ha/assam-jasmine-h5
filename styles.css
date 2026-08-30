@@ -1764,6 +1764,9 @@ input:focus-visible {
 
 .modal__panel--submit > p:not(.eyebrow) { margin: 0 auto 9px; max-width: 340px; color: #536a59; font-size: 13px; line-height: 1.7; }
 .modal__panel--submit > small { display: block; margin: 0 0 24px; color: #7b897c; font-size: 10px; line-height: 1.6; }
+.submit-mail-actions { display: grid; gap: 12px; justify-items: center; }
+.submit-mail-actions .primary-btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.mail-copy-btn { min-width: 210px; min-height: 46px; padding: 10px 24px; border: 1px solid #4b8158; border-radius: 999px; background: #f7faed; color: var(--green-800); font-weight: 800; }
 .submit-status-icon { display: grid; width: 76px; height: 76px; place-items: center; margin: 0 auto 17px; border: 7px solid white; border-radius: 50%; background: var(--green-700); box-shadow: 0 10px 24px rgba(22,63,42,.22); color: white; font-size: 35px; font-weight: 900; }
 
 .ticket-preview {
