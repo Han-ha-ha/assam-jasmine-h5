@@ -9,6 +9,7 @@ from psd_tools import PSDImage
 
 ROOT = Path(__file__).resolve().parents[1]
 PSD_PATH = ROOT / "素材3" / "广州站源文件" / "广州站-竖版艺人合集.psd"
+LANDSCAPE_PSD_PATH = ROOT / "素材3" / "广州站源文件" / "横构图.psd"
 HOME_DIR = ROOT / "assets" / "home"
 SHARE_DIR = ROOT / "assets" / "share"
 FONT_BODY = ROOT / "字体文件" / "方正粗倩简体.ttf"
@@ -82,6 +83,10 @@ def build() -> None:
     full_kv = psd.composite().convert("RGB")
     home_kv = full_kv.resize((1080, 1920), Image.Resampling.LANCZOS)
     home_kv.save(HOME_DIR / "guangzhou-kv-9x16.webp", "WEBP", quality=88, method=6)
+
+    landscape_kv = PSDImage.open(LANDSCAPE_PSD_PATH).composite().convert("RGB")
+    landscape_kv = landscape_kv.resize((1280, 720), Image.Resampling.LANCZOS)
+    landscape_kv.save(HOME_DIR / "guangzhou-kv-16x9.webp", "WEBP", quality=88, method=6)
 
     background = layers["背景"].composite().convert("RGB")
     title = layers["标题 "].composite().convert("RGBA")
@@ -165,6 +170,7 @@ def build() -> None:
     poster.convert("RGB").save(SHARE_DIR / "ticket-share-poster.jpg", "JPEG", quality=92, optimize=True, progressive=True)
 
     print(f"Built {HOME_DIR / 'guangzhou-kv-9x16.webp'}")
+    print(f"Built {HOME_DIR / 'guangzhou-kv-16x9.webp'}")
     print(f"Built {SHARE_DIR / 'ticket-share-poster.jpg'}")
 
 

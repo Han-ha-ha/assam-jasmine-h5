@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260830-home-kv-no-ghost-v16";
+  const APP_VERSION = "20260830-landscape-home-polish-v18";
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
@@ -30,7 +30,7 @@
     loadingTimeout: 4500,
     preloadAssets: [
       "素材/logo.png",
-      "assets/home/guangzhou-kv-9x16.webp",
+      "assets/home/guangzhou-kv-16x9.webp",
       "assets/share/ticket-share-poster.jpg",
       "素材3/web/scene-composite.webp",
       "素材3/web/zone-cup-booth.webp",
