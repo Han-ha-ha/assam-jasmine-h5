@@ -230,8 +230,8 @@ input:focus-visible {
   position: relative;
   z-index: 5;
   flex: 0 0 auto;
-  min-height: calc(172px + var(--safe-bottom));
-  padding: 12px 18px var(--safe-bottom);
+  min-height: 0;
+  padding: 10px 18px max(10px, env(safe-area-inset-bottom));
   border-top: 3px solid rgba(255,255,255,.86);
   background:
     radial-gradient(circle at 12% 18%, rgba(255,255,255,.23) 0 4px, transparent 5px),
@@ -1685,7 +1685,7 @@ input:focus-visible {
 @media (max-height: 670px) {
   .brand-lockup { padding-top: var(--safe-top); }
   .brand-lockup img { width: min(58vw, 290px); }
-  .home__function-panel { min-height: calc(137px + var(--safe-bottom)); padding-top: 7px; }
+  .home__function-panel { padding: 7px 18px max(8px, env(safe-area-inset-bottom)); }
   .home__function-panel p { margin-bottom: 5px; }
   .home__function-panel .primary-btn { min-height: 45px; }
   .home__function-panel .text-btn { margin-top: 2px; padding-block: 2px; }
