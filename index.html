@@ -8,7 +8,7 @@
     <meta name="description" content="在好心情音乐会现场找到5个茉莉奶绿，参与抽奖赢广州站电子门票。" />
     <title>找奶绿 赢门票｜好心情音乐会广州站</title>
     <link rel="icon" type="image/png" href="%E7%B4%A0%E6%9D%90/logo.png" />
-    <link rel="stylesheet" href="styles.css?v=20260831-mail-launch-fallback-v20" />
+    <link rel="stylesheet" href="styles.css?v=20260831-dual-kv-mail-sync-v21" />
     <!-- 百度统计：客户提供完整异步统计代码后插入此处。 -->
   </head>
   <body>
@@ -21,7 +21,7 @@
 
     <main id="app" class="app" aria-live="polite">
       <section id="page-home" class="page page--home is-active" data-page="home" aria-hidden="false">
-        <div class="home__visual">
+        <div class="home__visual home-landscape-only">
           <img
             class="home__kv"
             src="assets/home/guangzhou-kv-16x9.webp"
@@ -29,7 +29,7 @@
             draggable="false"
           />
         </div>
-        <div class="home__campaign">
+        <div class="home__campaign home-landscape-only">
           <i class="home__flower home__flower--left" aria-hidden="true">✿</i>
           <i class="home__flower home__flower--right" aria-hidden="true">✿</i>
           <div class="home__campaign-heading">
@@ -65,7 +65,20 @@
 
           <div class="home__prize-note"><span>一等奖</span><b>好心情音乐会广州站门票 1 张</b><i aria-hidden="true">✦</i></div>
 
-          <button id="startBtn" class="primary-btn primary-btn--large" type="button">开始探索</button>
+          <button id="startBtn" class="primary-btn primary-btn--large js-start-button" type="button">开始探索</button>
+          <button class="text-btn" type="button" data-open-modal="rules">活动规则</button>
+        </div>
+        <div class="home__vertical-visual home-vertical-only">
+          <img
+            class="home__vertical-kv"
+            src="assets/home/guangzhou-kv-9x16.webp"
+            alt="统一阿萨姆好心情音乐会广州站，演出时间9月19日19点至21点，地点广州大学城体育中心2号副场"
+            draggable="false"
+          />
+        </div>
+        <div class="home__vertical-panel home-vertical-only">
+          <p><b>找到5个茉莉奶绿</b><span>赢音乐会门票</span></p>
+          <button id="verticalStartBtn" class="primary-btn primary-btn--large js-start-button" type="button">开始探索</button>
           <button class="text-btn" type="button" data-open-modal="rules">活动规则</button>
         </div>
       </section>
@@ -330,8 +343,8 @@
         <div class="submit-status-icon" aria-hidden="true">✓</div>
         <p class="eyebrow">兑奖资料</p>
         <h2 id="submitTitle">中奖邮件已经准备好</h2>
-        <p>页面会尝试唤起邮件应用；若微信没有响应，请点击下方按钮。</p>
-        <small>收件邮箱：2998458181@qq.com，仍需在邮件应用中确认发送。</small>
+        <p id="submitMailText">页面会尝试唤起邮件应用；若微信没有响应，请点击下方按钮。</p>
+        <small id="submitMailNote">收件邮箱：2998458181@qq.com，仍需在邮件应用中确认发送。</small>
         <div class="submit-mail-actions">
           <a id="mailOpenLink" class="primary-btn" href="#" rel="external">打开邮件应用</a>
           <button id="copyWinnerInfoBtn" class="mail-copy-btn" type="button">复制中奖信息</button>
@@ -345,6 +358,6 @@
 
     <audio id="bgm" src="素材3/遇见茉莉好心情_final_MMM(1).mp3" preload="none" loop></audio>
 
-  <script src="app.js?v=20260831-mail-launch-fallback-v20"></script>
+  <script src="app.js?v=20260831-dual-kv-mail-sync-v21"></script>
   </body>
 </html>

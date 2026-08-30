@@ -1,7 +1,11 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260831-mail-launch-fallback-v20";
+  const APP_VERSION = "20260831-dual-kv-mail-sync-v21";
+  const PAGE_PARAMS = new URLSearchParams(window.location.search);
+  const HOME_KV_VARIANT = PAGE_PARAMS.get("kv") === "vertical" ? "vertical" : "landscape";
+  const IS_WECHAT = /MicroMessenger/i.test(navigator.userAgent);
+  document.documentElement.dataset.homeKv = HOME_KV_VARIANT;
 
   const CONFIG = {
     storageKey: "assam-jasmine-h5-v1",
@@ -30,7 +34,9 @@
     loadingTimeout: 4500,
     preloadAssets: [
       "素材/logo.png",
-      "assets/home/guangzhou-kv-16x9.webp",
+      HOME_KV_VARIANT === "vertical"
+        ? "assets/home/guangzhou-kv-9x16.webp"
+        : "assets/home/guangzhou-kv-16x9.webp",
       "assets/share/ticket-share-poster.jpg",
       "素材3/web/scene-composite.webp",
       "素材3/web/zone-cup-booth.webp",
@@ -209,14 +215,14 @@
   };
 
   const updateHomeUI = () => {
-    const button = $("#startBtn");
+    const buttons = $$(".js-start-button");
+    let label = "开始探索";
     if (state.found.length === 5) {
-      button.textContent = "继续抽奖";
+      label = "继续抽奖";
     } else if (state.found.length > 0) {
-      button.textContent = `继续找奶绿（${state.found.length}/5）`;
-    } else {
-      button.textContent = "开始探索";
+      label = `继续找奶绿（${state.found.length}/5）`;
     }
+    buttons.forEach((button) => { button.textContent = label; });
   };
 
   const showPage = (name) => {
@@ -647,10 +653,16 @@
       "",
       "请品牌方工作人员核对并联系中奖者。",
     ].join("\n");
-    const mailtoUrl = `mailto:${CONFIG.recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const fullMailtoUrl = `mailto:${CONFIG.recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoUrl = IS_WECHAT ? `mailto:${CONFIG.recipientEmail}` : fullMailtoUrl;
     pendingWinnerMailText = `收件邮箱：${CONFIG.recipientEmail}\n主题：${subject}\n\n${body}`;
     const mailLink = $("#mailOpenLink");
     mailLink.href = mailtoUrl;
+    $("#submitTitle").textContent = IS_WECHAT ? "请打开邮件并粘贴信息" : "中奖邮件已经准备好";
+    $("#submitMailText").textContent = IS_WECHAT
+      ? "微信无法正确传递中文邮件正文，请先复制中奖信息，再打开邮件应用粘贴发送。"
+      : "页面会尝试唤起邮件应用；若没有响应，请点击下方按钮。";
+    $("#submitMailNote").textContent = `收件邮箱：${CONFIG.recipientEmail}，仍需在邮件应用中确认发送。`;
 
     state.submitted = true;
     saveState();
@@ -658,8 +670,13 @@
     openModal("submit");
     beep("complete");
     vibrate(45);
+    if (IS_WECHAT) {
+      copyText(pendingWinnerMailText).then((copied) => {
+        if (copied) showToast("中奖信息已复制，打开邮件后直接粘贴", 3600);
+      });
+    }
     mailLink.click();
-    showToast("若微信未自动打开，请点击“打开邮件应用”", 3600);
+    if (!IS_WECHAT) showToast("若未自动打开，请点击“打开邮件应用”", 3600);
   };
 
   const sceneController = (() => {
@@ -809,18 +826,18 @@
   })();
 
   const bindEvents = () => {
-    $("#startBtn").addEventListener("click", () => {
-      ensureAudio();
-      startBgm();
-      beep("tap");
-      if (state.found.length === 5) {
-        grantInitialChances();
-        showPage("draw");
-        return;
-      }
-      showPage("game");
-      if (!state.guided) openModal("guide");
-    });
+    $$(".js-start-button").forEach((button) => button.addEventListener("click", () => {
+        ensureAudio();
+        startBgm();
+        beep("tap");
+        if (state.found.length === 5) {
+          grantInitialChances();
+          showPage("draw");
+          return;
+        }
+        showPage("game");
+        if (!state.guided) openModal("guide");
+      }));
 
     $("#guideOk").addEventListener("click", () => {
       state.guided = true;
