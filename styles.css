@@ -1338,12 +1338,7 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 
 .page--draw {
   padding: calc(var(--safe-top) + 12px) 18px calc(var(--safe-bottom) + 14px);
-  background:
-    radial-gradient(ellipse 28% 8% at 5% 14%, rgba(255,255,255,.88) 0 42%, rgba(255,255,255,.48) 43% 68%, transparent 70%),
-    radial-gradient(ellipse 24% 7% at 92% 24%, rgba(255,255,255,.82) 0 42%, rgba(255,255,255,.42) 43% 68%, transparent 70%),
-    radial-gradient(ellipse 96% 34% at 14% 105%, #70b54c 0 56%, transparent 57%),
-    radial-gradient(ellipse 98% 38% at 92% 106%, #91ca68 0 58%, transparent 59%),
-    linear-gradient(180deg, #72c6ef 0%, #a9daf0 48%, #e5f1d3 56%, #8fc866 57%, #76b94e 100%);
+  background: #9fd5eb url("assets/draw/poster-background.webp") center / cover no-repeat;
 }
 
 .draw-header { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; text-align: center; }

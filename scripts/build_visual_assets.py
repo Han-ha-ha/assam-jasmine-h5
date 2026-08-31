@@ -12,6 +12,7 @@ PSD_PATH = ROOT / "素材3" / "广州站源文件" / "广州站-竖版艺人合�
 LANDSCAPE_PSD_PATH = ROOT / "素材3" / "广州站源文件" / "横构图.psd"
 HOME_DIR = ROOT / "assets" / "home"
 SHARE_DIR = ROOT / "assets" / "share"
+DRAW_DIR = ROOT / "assets" / "draw"
 FONT_BODY = ROOT / "字体文件" / "方正粗倩简体.ttf"
 FONT_SANS = ROOT / "字体文件" / "SourceHanSansCN-H5.woff2"
 FALLBACK_FONT = ROOT / "字体文件" / "胡晓波浪漫宋.ttf"
@@ -75,6 +76,7 @@ def rounded_ticket(size: tuple[int, int]) -> tuple[Image.Image, Image.Image]:
 def build() -> None:
     HOME_DIR.mkdir(parents=True, exist_ok=True)
     SHARE_DIR.mkdir(parents=True, exist_ok=True)
+    DRAW_DIR.mkdir(parents=True, exist_ok=True)
 
     psd = PSDImage.open(PSD_PATH)
     artboard = list(psd)[0]
@@ -98,6 +100,12 @@ def build() -> None:
         poster,
         Image.new("RGBA", poster_size, (225, 246, 207, 255)),
         0.10,
+    )
+    poster.convert("RGB").save(
+        DRAW_DIR / "poster-background.webp",
+        "WEBP",
+        quality=90,
+        method=6,
     )
 
     # 顶部保留官方活动视觉。
@@ -172,6 +180,7 @@ def build() -> None:
     print(f"Built {HOME_DIR / 'guangzhou-kv-9x16.webp'}")
     print(f"Built {HOME_DIR / 'guangzhou-kv-16x9.webp'}")
     print(f"Built {SHARE_DIR / 'ticket-share-poster.jpg'}")
+    print(f"Built {DRAW_DIR / 'poster-background.webp'}")
 
 
 if __name__ == "__main__":
