@@ -1351,7 +1351,7 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 
 .draw-chances {
   width: fit-content;
-  margin: clamp(88px, 15vh, 128px) auto 6px;
+  margin: calc(22vh - var(--safe-top) - 54px) auto 6px;
   padding: 6px 18px;
   border-radius: 999px;
   background: rgba(255,255,255,.78);
@@ -1361,8 +1361,9 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 .draw-chances strong { color: #c88d2e; font-size: 22px; }
 
 .wheel-wrap {
+  --wheel-size: min(74vw, 35vh, 470px);
   position: relative;
-  width: min(74vw, 35vh, 470px);
+  width: var(--wheel-size);
   aspect-ratio: 1;
   margin: 6px auto 0;
 }
@@ -1398,17 +1399,17 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 }
 
 .wheel__label {
-  --label-radius: clamp(86px, 27vw, 145px);
+  --label-radius: calc(var(--wheel-size) * .31);
   position: absolute;
   z-index: 2;
   top: 50%;
   left: 50%;
   display: grid;
-  width: clamp(54px, 17vw, 86px);
-  min-height: 34px;
+  width: calc(var(--wheel-size) * .23);
+  min-height: 28px;
   place-items: center;
   color: white;
-  font-size: clamp(9px, 2.65vw, 14px);
+  font-size: clamp(8px, calc(var(--wheel-size) * .034), 14px);
   font-weight: 800;
   line-height: 1.12;
   text-align: center;
@@ -1425,14 +1426,14 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 .wheel__label--8 { transform: translate(-50%, -50%) rotate(337.5deg) translateY(calc(var(--label-radius) * -1)) rotate(-337.5deg); }
 
 .wheel__label--prize {
-  gap: 1px;
+  gap: 0;
   color: #fff8d0;
-  font-size: clamp(8px, 2.25vw, 12px);
+  font-size: clamp(7px, calc(var(--wheel-size) * .03), 11px);
   text-shadow: 0 1px 2px rgba(0,0,0,.26);
 }
 .wheel__label--prize img {
   display: block;
-  width: clamp(43px, 12.5vw, 67px);
+  width: clamp(32px, calc(var(--wheel-size) * .15), 60px);
   height: auto;
   filter: drop-shadow(0 2px 2px rgba(27,69,39,.2));
 }
@@ -1929,7 +1930,6 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
   .complete-card { margin-top: 31px; padding-top: 36px; }
   .collection-row { margin: 14px 0; }
   .chance-ticket { margin-bottom: 18px; }
-  .draw-chances { margin-top: clamp(76px, 14vh, 94px); }
   .share-page__intro { margin-block: 3px 4px; font-size: 10px; }
   .share-page__save-tip { margin-block: 4px; }
   .share-page__body > .primary-btn { min-height: 44px; }
