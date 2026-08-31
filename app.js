@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260831-production-config-v32";
+  const APP_VERSION = "20260831-larger-wheel-v33";
   const PAGE_PARAMS = new URLSearchParams(window.location.search);
   const HOME_KV_VARIANT = PAGE_PARAMS.get("kv") === "vertical" ? "vertical" : "landscape";
   const IS_WECHAT = /MicroMessenger/i.test(navigator.userAgent);
