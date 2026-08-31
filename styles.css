@@ -1338,7 +1338,7 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 
 .page--draw {
   padding: calc(var(--safe-top) + 12px) 18px calc(var(--safe-bottom) + 14px);
-  background: #9fd5eb url("assets/draw/poster-background.webp") center / cover no-repeat;
+  background: #9fd5eb url("assets/draw/customer-draw-background.webp") center / cover no-repeat;
 }
 
 .draw-header { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; text-align: center; }

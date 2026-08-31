@@ -10,6 +10,7 @@ from psd_tools import PSDImage
 ROOT = Path(__file__).resolve().parents[1]
 PSD_PATH = ROOT / "素材3" / "广州站源文件" / "广州站-竖版艺人合集.psd"
 LANDSCAPE_PSD_PATH = ROOT / "素材3" / "广州站源文件" / "横构图.psd"
+CUSTOMER_DRAW_PSD_PATH = ROOT / "素材3" / "750x1624px-首页背景.psd"
 HOME_DIR = ROOT / "assets" / "home"
 SHARE_DIR = ROOT / "assets" / "share"
 DRAW_DIR = ROOT / "assets" / "draw"
@@ -108,6 +109,19 @@ def build() -> None:
         method=6,
     )
 
+    # 客户提供的抽奖页竖版背景：仅关闭蓝色提示栏、栏中文字和左侧红色剩余次数牌。
+    customer_draw_psd = PSDImage.open(CUSTOMER_DRAW_PSD_PATH)
+    customer_draw_layers = list(customer_draw_psd)
+    for layer_index in (4, 5, 6):
+        customer_draw_layers[layer_index].visible = False
+    customer_draw_background = customer_draw_psd.composite().convert("RGB")
+    customer_draw_background.save(
+        DRAW_DIR / "customer-draw-background.webp",
+        "WEBP",
+        quality=90,
+        method=6,
+    )
+
     # 顶部保留官方活动视觉。
     title_small = fit(title, 750, 430)
     poster.alpha_composite(title_small, ((poster.width - title_small.width) // 2, 66))
@@ -181,6 +195,7 @@ def build() -> None:
     print(f"Built {HOME_DIR / 'guangzhou-kv-16x9.webp'}")
     print(f"Built {SHARE_DIR / 'ticket-share-poster.jpg'}")
     print(f"Built {DRAW_DIR / 'poster-background.webp'}")
+    print(f"Built {DRAW_DIR / 'customer-draw-background.webp'}")
 
 
 if __name__ == "__main__":
