@@ -1125,8 +1125,8 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 
 .scene .target {
   z-index: 30;
-  width: 150px;
-  height: 300px;
+  width: 230px;
+  height: 330px;
   filter: drop-shadow(0 12px 10px rgba(17, 54, 31, .38));
 }
 
@@ -1150,42 +1150,37 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 }
 
 .scene .target--1 {
-  top: 4880px;
+  top: 5150px;
   right: auto;
-  left: 700px;
+  left: 1818px;
   transform: none;
 }
 
 .scene .target--2 {
-  z-index: 12;
-  top: 4105px;
+  top: 4153px;
   right: auto;
-  left: 2457px;
+  left: 262px;
   transform: none;
 }
 
-.scene .target--2 img {
-  width: 80px;
-}
-
 .scene .target--3 {
-  top: 2100px;
+  top: 1372px;
   right: auto;
-  left: 2020px;
+  left: 1447px;
   transform: none;
 }
 
 .scene .target--4 {
-  top: 1850px;
+  top: 533px;
   right: auto;
-  left: 810px;
+  left: 563px;
   transform: none;
 }
 
 .scene .target--5 {
-  top: 620px;
+  top: 632px;
   right: auto;
-  left: 1370px;
+  left: 2337px;
   transform: none;
 }
 
@@ -1344,9 +1339,11 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 .page--draw {
   padding: calc(var(--safe-top) + 12px) 18px calc(var(--safe-bottom) + 14px);
   background:
-    radial-gradient(circle at 12% 22%, rgba(255,255,255,.8), transparent 17%),
-    radial-gradient(circle at 85% 35%, rgba(255,255,255,.65), transparent 20%),
-    linear-gradient(155deg, #edf7d9, #bcd99b);
+    radial-gradient(ellipse 28% 8% at 5% 14%, rgba(255,255,255,.88) 0 42%, rgba(255,255,255,.48) 43% 68%, transparent 70%),
+    radial-gradient(ellipse 24% 7% at 92% 24%, rgba(255,255,255,.82) 0 42%, rgba(255,255,255,.42) 43% 68%, transparent 70%),
+    radial-gradient(ellipse 96% 34% at 14% 105%, #70b54c 0 56%, transparent 57%),
+    radial-gradient(ellipse 98% 38% at 92% 106%, #91ca68 0 58%, transparent 59%),
+    linear-gradient(180deg, #72c6ef 0%, #a9daf0 48%, #e5f1d3 56%, #8fc866 57%, #76b94e 100%);
 }
 
 .draw-header { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; text-align: center; }
