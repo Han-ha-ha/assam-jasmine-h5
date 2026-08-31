@@ -1,18 +1,17 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260831-proportional-core-art-v31";
+  const APP_VERSION = "20260831-production-config-v32";
   const PAGE_PARAMS = new URLSearchParams(window.location.search);
   const HOME_KV_VARIANT = PAGE_PARAMS.get("kv") === "vertical" ? "vertical" : "landscape";
   const IS_WECHAT = /MicroMessenger/i.test(navigator.userAgent);
   document.documentElement.dataset.homeKv = HOME_KV_VARIANT;
 
   const CONFIG = {
-    storageKey: "assam-jasmine-h5-v1",
-    winnerPhonesStorageKey: "assam-jasmine-winning-phones-v1",
-    recipientEmail: "2998458181@qq.com",
-    // 临时测试配置：当前普通抽奖概率为 50%。正式上线前必须删除此项并恢复北京时间概率表。
-    temporaryWinProbability: 0.5,
+    // 正式配置使用 v2 存档，避免之前测试阶段的本机记录污染正式体验。
+    storageKey: "assam-jasmine-h5-v2",
+    winnerPhonesStorageKey: "assam-jasmine-winning-phones-v2",
+    recipientEmail: "2214047289@qq.com",
     // 所有边界均为北京时间（UTC+8）；中奖窗口以外的时间概率一律为 0。
     winProbabilitySchedule: [
       {
@@ -50,9 +49,6 @@
   let versionPrompted = false;
 
   const getScheduledWinProbability = (now = Date.now()) => {
-    if (Number.isFinite(CONFIG.temporaryWinProbability)) {
-      return Math.max(0, Math.min(1, CONFIG.temporaryWinProbability));
-    }
     const activePeriod = CONFIG.winProbabilitySchedule.find(({ startAt, endAt }) => (
       now >= Date.parse(startAt) && now < Date.parse(endAt)
     ));
