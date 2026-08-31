@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260831-smaller-chance-pill-v30";
+  const APP_VERSION = "20260831-proportional-core-art-v31";
   const PAGE_PARAMS = new URLSearchParams(window.location.search);
   const HOME_KV_VARIANT = PAGE_PARAMS.get("kv") === "vertical" ? "vertical" : "landscape";
   const IS_WECHAT = /MicroMessenger/i.test(navigator.userAgent);
@@ -38,7 +38,10 @@
         ? "assets/home/guangzhou-kv-9x16.webp"
         : "assets/home/guangzhou-kv-16x9.webp",
       "assets/share/ticket-share-poster.jpg",
-      "assets/draw/customer-draw-background.webp",
+      "assets/draw/customer-draw-backdrop.webp",
+      "assets/draw/customer-draw-logo.webp",
+      "assets/draw/customer-draw-product.webp",
+      "assets/draw/customer-draw-slogan.webp",
       "素材3/web/scene-people-final.webp",
       "素材3/门票图.png",
     ],

@@ -53,6 +53,13 @@ def centered_text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, tex
     draw.text((xy[0] - (box[2] - box[0]) / 2, xy[1]), text, font=text_font, fill=fill)
 
 
+def layer_canvas(psd: PSDImage, layer, background=(157, 210, 239, 255)) -> Image.Image:
+    canvas = Image.new("RGBA", (psd.width, psd.height), background)
+    rendered = layer.composite().convert("RGBA")
+    canvas.alpha_composite(rendered, (layer.left, layer.top))
+    return canvas
+
+
 def rounded_ticket(size: tuple[int, int]) -> tuple[Image.Image, Image.Image]:
     width, height = size
     mask = Image.new("L", size, 0)
@@ -121,6 +128,25 @@ def build() -> None:
         quality=90,
         method=6,
     )
+
+    # 分层适配版：天空草地允许延展，Logo、产品/IP和底部口号独立等比例显示。
+    layer_canvas(customer_draw_psd, customer_draw_layers[1]).convert("RGB").save(
+        DRAW_DIR / "customer-draw-backdrop.webp",
+        "WEBP",
+        quality=90,
+        method=6,
+    )
+    for layer_index, file_name in (
+        (2, "customer-draw-logo.webp"),
+        (7, "customer-draw-product.webp"),
+        (8, "customer-draw-slogan.webp"),
+    ):
+        customer_draw_layers[layer_index].composite().convert("RGBA").save(
+            DRAW_DIR / file_name,
+            "WEBP",
+            quality=92,
+            method=6,
+        )
 
     # 顶部保留官方活动视觉。
     title_small = fit(title, 750, 430)
@@ -196,6 +222,10 @@ def build() -> None:
     print(f"Built {SHARE_DIR / 'ticket-share-poster.jpg'}")
     print(f"Built {DRAW_DIR / 'poster-background.webp'}")
     print(f"Built {DRAW_DIR / 'customer-draw-background.webp'}")
+    print(f"Built {DRAW_DIR / 'customer-draw-backdrop.webp'}")
+    print(f"Built {DRAW_DIR / 'customer-draw-logo.webp'}")
+    print(f"Built {DRAW_DIR / 'customer-draw-product.webp'}")
+    print(f"Built {DRAW_DIR / 'customer-draw-slogan.webp'}")
 
 
 if __name__ == "__main__":
