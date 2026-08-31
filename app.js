@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260831-copy-mail-clean-copy-v22";
+  const APP_VERSION = "20260831-baidu-win-count-v23";
   const PAGE_PARAMS = new URLSearchParams(window.location.search);
   const HOME_KV_VARIANT = PAGE_PARAMS.get("kv") === "vertical" ? "vertical" : "landscape";
   const IS_WECHAT = /MicroMessenger/i.test(navigator.userAgent);
@@ -496,6 +496,8 @@
     if (won) {
       state.won = true;
       rememberWinningPhone(phone);
+      window._hmt = window._hmt || [];
+      window._hmt.push(["_trackEvent", "中奖人数", "中奖"]);
     }
     saveState();
     updateDrawUI();
