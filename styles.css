@@ -1337,30 +1337,34 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 @keyframes celebrate { to { transform: translateY(115vh) rotate(540deg); } }
 
 .page--draw {
-  padding: calc(var(--safe-top) + 12px) 18px calc(var(--safe-bottom) + 14px);
-  background: #9fd5eb url("assets/draw/customer-draw-background.webp") center / cover no-repeat;
+  padding: calc(var(--safe-top) + 12px) 14px calc(var(--safe-bottom) + 8px);
+  background: #9fd5eb url("assets/draw/customer-draw-background.webp") center / 100% 100% no-repeat;
 }
 
 .draw-header { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; text-align: center; }
-.draw-header p { margin: 0; color: var(--green-700); font-size: 9px; letter-spacing: .18em; }
-.draw-header h2 { margin: 2px 0 0; font-family: var(--font-title); font-size: clamp(25px, 7vw, 40px); color: var(--green-950); }
+.page--draw .icon-btn {
+  border-color: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.64);
+  box-shadow: 0 8px 24px rgba(39,88,59,.13);
+  color: var(--green-700);
+}
 
 .draw-chances {
   width: fit-content;
-  margin: clamp(18px, 4vh, 34px) auto 14px;
-  padding: 8px 20px;
+  margin: clamp(88px, 15vh, 128px) auto 6px;
+  padding: 6px 18px;
   border-radius: 999px;
   background: rgba(255,255,255,.78);
   box-shadow: 0 6px 18px rgba(37,88,59,.12);
-  font-size: 14px;
+  font-size: 13px;
 }
-.draw-chances strong { color: #c88d2e; font-size: 24px; }
+.draw-chances strong { color: #c88d2e; font-size: 22px; }
 
 .wheel-wrap {
   position: relative;
-  width: min(82vw, 470px);
+  width: min(74vw, 35vh, 470px);
   aspect-ratio: 1;
-  margin: 22px auto 0;
+  margin: 6px auto 0;
 }
 
 .wheel {
@@ -1480,20 +1484,20 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 .share-entry {
   display: flex;
   width: min(90%, 500px);
-  min-height: 62px;
+  min-height: 46px;
   align-items: center;
   justify-content: space-between;
-  margin: clamp(22px, 4vh, 38px) auto 0;
-  padding: 12px 18px;
+  margin: 8px auto 0;
+  padding: 8px 14px;
   border: 1px solid rgba(255,255,255,.9);
   border-radius: 17px;
   background: rgba(255,255,255,.64);
   box-shadow: 0 8px 24px rgba(39,88,59,.13);
   text-align: left;
 }
-.share-entry span { font-size: 13px; }
-.share-entry b { color: var(--green-700); font-size: 12px; }
-.draw-note { margin: 12px 0 0; color: rgba(22,53,41,.65); font-size: 10px; text-align: center; }
+.share-entry span { font-size: 11px; }
+.share-entry b { color: var(--green-700); font-size: 11px; }
+.draw-note { margin: 5px 0 0; color: rgba(22,53,41,.65); font-size: 8px; text-align: center; }
 
 .page--share {
   overflow: hidden;
@@ -1925,9 +1929,7 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
   .complete-card { margin-top: 31px; padding-top: 36px; }
   .collection-row { margin: 14px 0; }
   .chance-ticket { margin-bottom: 18px; }
-  .wheel-wrap { width: min(68vh, 78vw); margin-top: 8px; }
-  .draw-chances { margin: 10px auto; }
-  .share-entry { margin-top: 12px; }
+  .draw-chances { margin-top: clamp(76px, 14vh, 94px); }
   .share-page__intro { margin-block: 3px 4px; font-size: 10px; }
   .share-page__save-tip { margin-block: 4px; }
   .share-page__body > .primary-btn { min-height: 44px; }
