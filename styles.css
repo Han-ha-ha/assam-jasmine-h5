@@ -1352,13 +1352,13 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 .draw-chances {
   width: fit-content;
   margin: calc(22vh - var(--safe-top) - 54px) auto 6px;
-  padding: 6px 18px;
+  padding: 4px 14px;
   border-radius: 999px;
   background: rgba(255,255,255,.78);
   box-shadow: 0 6px 18px rgba(37,88,59,.12);
-  font-size: 13px;
+  font-size: 11px;
 }
-.draw-chances strong { color: #c88d2e; font-size: 22px; }
+.draw-chances strong { color: #c88d2e; font-size: 18px; }
 
 .wheel-wrap {
   --wheel-size: min(74vw, 35vh, 470px);
