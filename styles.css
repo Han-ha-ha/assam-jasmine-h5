@@ -1843,29 +1843,6 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
   width: min(82vw, 380px);
 }
 
-.modal__panel--eligibility { max-width: 420px; }
-.phone-check-icon { display: grid; width: 72px; height: 72px; place-items: center; margin: 0 auto 18px; border-radius: 50%; background: var(--green-100); color: var(--green-700); font-size: 34px; }
-.modal__panel--eligibility > p { margin: 0 auto 20px; max-width: 310px; color: #536a59; font-size: 13px; line-height: 1.7; }
-.phone-check-field { display: block; text-align: left; }
-.phone-check-field span { display: block; margin-bottom: 7px; color: var(--green-800); font-size: 13px; font-weight: 800; }
-.phone-check-field input {
-  width: 100%;
-  height: 52px;
-  padding: 0 15px;
-  border: 1px solid #cfdcc3;
-  border-radius: 14px;
-  background: #f8faef;
-  color: var(--ink);
-  font-size: 17px;
-  letter-spacing: .04em;
-}
-.phone-check-field input.has-error { border-color: #ca5555; background: #fff5f2; }
-.phone-check-error { display: block; min-height: 38px; padding-top: 6px; color: #bd4b4b; font-size: 12px; font-style: normal; line-height: 1.5; text-align: left; }
-.modal__panel--eligibility .primary-btn { width: 100%; }
-.phone-check-note { display: block; margin-top: 16px; color: #829083; font-size: 10px; line-height: 1.55; }
-.modal__panel--eligibility.is-duplicate .phone-check-icon { background: #fff0d7; color: #b77a25; }
-.modal__panel--eligibility.is-duplicate .phone-check-field input { border-color: #e0b779; background: #fffaf0; }
-
 .modal__panel--result h2 { font-size: 34px; }
 .modal__panel--result > p:not(.eyebrow) { margin: 0 0 20px; color: #536a59; line-height: 1.7; }
 
@@ -1906,10 +1883,9 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 }
 .modal--guide h2 { margin: 22px 0 8px; font-size: 25px; }
 .modal--guide p { margin: 0 0 26px; font-size: 13px; opacity: .82; }
-.guide-gesture { position: relative; width: 180px; height: 140px; }
-.guide-gesture span { position: absolute; z-index: 2; bottom: 0; left: 72px; font-size: 62px; animation: guide-hand 2s ease-in-out infinite; }
-.guide-gesture i { position: absolute; top: 30px; left: 50%; width: 130px; height: 70px; border: 3px dashed rgba(255,255,255,.65); border-radius: 50%; transform: translateX(-50%); }
-@keyframes guide-hand { 0%,100% { transform: translate(-48px, 12px); } 50% { transform: translate(48px, -18px); } }
+.guide-gesture { display: grid; width: 110px; height: 110px; place-items: center; }
+.guide-gesture span { font-size: 66px; line-height: 1; filter: drop-shadow(0 8px 12px rgba(0,0,0,.25)); animation: guide-hand 1.35s ease-in-out infinite; }
+@keyframes guide-hand { 0%,100% { transform: translateY(8px) scale(.96); } 50% { transform: translateY(-6px) scale(1.05); } }
 
 .toast {
   position: fixed;

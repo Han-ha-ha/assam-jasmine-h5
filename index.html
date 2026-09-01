@@ -8,10 +8,11 @@
     <meta name="description" content="在好心情音乐会现场找到5个茉莉奶绿，参与抽奖赢广州站电子门票。" />
     <title>找奶绿 赢门票｜好心情音乐会广州站</title>
     <link rel="icon" type="image/png" href="%E7%B4%A0%E6%9D%90/logo.png" />
-    <link rel="stylesheet" href="styles.css?v=20260831-larger-wheel-v33" />
+    <link rel="stylesheet" href="styles.css?v=20260901-independent-test-flow-v34" />
     <script>
       var _hmt = window._hmt || [];
       (function () {
+        if (new URLSearchParams(window.location.search).get("testMode") === "1") return;
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?f3af2f8610b5a7b5ff2c6c892b6d953a";
         var s = document.getElementsByTagName("script")[0];
@@ -237,7 +238,7 @@
             </label>
             <label>
               <span>手机号</span>
-              <input id="winnerPhone" name="phone" type="tel" maxlength="11" inputmode="numeric" autocomplete="tel" placeholder="抽奖前确认的手机号" readonly />
+              <input id="winnerPhone" name="phone" type="tel" maxlength="11" inputmode="numeric" autocomplete="tel" placeholder="请输入11位手机号" />
               <em class="field-error"></em>
             </label>
             <label>
@@ -265,9 +266,9 @@
     </main>
 
     <div id="guideModal" class="modal modal--guide" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
-      <div class="guide-gesture" aria-hidden="true"><span>☝</span><i></i></div>
+      <div class="guide-gesture" aria-hidden="true"><span>👆</span></div>
       <h2 id="guideTitle">从花艺拱门进入乐园</h2>
-      <p>上下左右拖动画面探索至顶部主舞台，找到沿途的 5 个茉莉奶绿</p>
+      <p>上下左右拖动画面探索至顶部主舞台，找到并点击人物手中5个茉莉奶绿</p>
       <button id="guideOk" class="outline-btn" type="button">知道了</button>
     </div>
 
@@ -303,24 +304,6 @@
       <div class="share-guide__actions">
         <button id="confirmShareBtn" class="primary-btn" type="button">我已分享，领取机会</button>
         <button class="outline-btn" type="button" data-close-modal>返回海报</button>
-      </div>
-    </div>
-
-    <div id="eligibilityModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="eligibilityTitle">
-      <div class="modal__mask" data-close-modal></div>
-      <div class="modal__panel modal__panel--eligibility">
-        <button class="modal__close" type="button" data-close-modal aria-label="关闭">×</button>
-        <div class="phone-check-icon" aria-hidden="true">✦</div>
-        <h2 id="eligibilityTitle">确认抽奖手机号</h2>
-        <p id="eligibilityText">每个手机号限中奖 1 张，请先确认本次抽奖手机号</p>
-        <form id="eligibilityForm" novalidate>
-          <label class="phone-check-field" for="eligibilityPhone">
-            <span>手机号</span>
-            <input id="eligibilityPhone" name="eligibilityPhone" type="tel" maxlength="11" inputmode="numeric" autocomplete="tel" placeholder="请输入11位手机号" />
-          </label>
-          <em id="eligibilityError" class="phone-check-error" aria-live="polite"></em>
-          <button id="eligibilityConfirmBtn" class="primary-btn" type="submit">确认并抽奖</button>
-        </form>
       </div>
     </div>
 
@@ -361,6 +344,6 @@
 
     <audio id="bgm" src="素材3/遇见茉莉好心情_final_MMM(1).mp3" preload="none" loop></audio>
 
-  <script src="app.js?v=20260831-larger-wheel-v33"></script>
+  <script src="app.js?v=20260901-independent-test-flow-v34"></script>
   </body>
 </html>

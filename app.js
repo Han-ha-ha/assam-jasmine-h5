@@ -1,16 +1,19 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260831-larger-wheel-v33";
+  const APP_VERSION = "20260901-independent-test-flow-v34";
   const PAGE_PARAMS = new URLSearchParams(window.location.search);
+  const IS_TEST_MODE = PAGE_PARAMS.get("testMode") === "1";
   const HOME_KV_VARIANT = PAGE_PARAMS.get("kv") === "vertical" ? "vertical" : "landscape";
   const IS_WECHAT = /MicroMessenger/i.test(navigator.userAgent);
   document.documentElement.dataset.homeKv = HOME_KV_VARIANT;
 
   const CONFIG = {
-    // 正式配置使用 v2 存档，避免之前测试阶段的本机记录污染正式体验。
-    storageKey: "assam-jasmine-h5-v2",
-    winnerPhonesStorageKey: "assam-jasmine-winning-phones-v2",
+    // 测试入口使用完全独立的存档，清理测试记录不会影响同一手机上的正式进度。
+    storageKey: IS_TEST_MODE ? "assam-jasmine-h5-test-v1" : "assam-jasmine-h5-v2",
+    winnerPhonesStorageKey: IS_TEST_MODE
+      ? "assam-jasmine-winning-phones-test-v1"
+      : "assam-jasmine-winning-phones-v2",
     recipientEmail: "2214047289@qq.com",
     // 所有边界均为北京时间（UTC+8）；中奖窗口以外的时间概率一律为 0。
     winProbabilitySchedule: [
@@ -49,6 +52,7 @@
   let versionPrompted = false;
 
   const getScheduledWinProbability = (now = Date.now()) => {
+    if (IS_TEST_MODE) return 0.5;
     const activePeriod = CONFIG.winProbabilitySchedule.find(({ startAt, endAt }) => (
       now >= Date.parse(startAt) && now < Date.parse(endAt)
     ));
@@ -122,11 +126,9 @@
     }
   };
 
-  // 临时测试入口：微信内置浏览器没有无痕模式时，用指定参数清除本机测试数据。
-  // 测试结束后删除此段逻辑，正式链接不会触发。
+  // 仅测试模式允许重置测试存档；正式入口即使带 testReset 参数也不会清除正式记录。
   const resetTestProgress = () => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("testReset") !== "1") return;
+    if (!IS_TEST_MODE || PAGE_PARAMS.get("testReset") !== "1") return;
     const resetHosts = /^(localhost|127\.0\.0\.1|han-ha-ha\.github\.io)$/;
     if (!resetHosts.test(window.location.hostname)) return;
     try {
@@ -408,31 +410,8 @@
     const input = $("#winnerPhone");
     if (!input) return;
     input.value = normalizePhone(state.currentPhone);
-    input.readOnly = true;
+    input.readOnly = state.submitted;
     $("#submitInfoBtn").textContent = state.submitted ? "再次打开邮件" : "提交信息";
-  };
-
-  const setEligibilityState = ({ duplicate = false, error = "" } = {}) => {
-    const panel = $("#eligibilityModal .modal__panel");
-    const input = $("#eligibilityPhone");
-    panel.classList.toggle("is-duplicate", duplicate);
-    input.readOnly = duplicate;
-    input.classList.toggle("has-error", Boolean(error) || duplicate);
-    $("#eligibilityTitle").textContent = duplicate ? "该手机号已中奖" : "确认抽奖手机号";
-    $("#eligibilityText").textContent = duplicate
-      ? "您已中奖，每人限1张"
-      : "每个手机号限中奖1张，请先确认本次抽奖手机号";
-    $("#eligibilityError").textContent = error || (duplicate ? "请勿重复参与中奖，可关闭弹窗返回活动页" : "");
-    $("#eligibilityConfirmBtn").textContent = duplicate ? "我知道了" : "确认并抽奖";
-  };
-
-  const openEligibilityCheck = (phone = state.currentPhone) => {
-    const normalized = normalizePhone(phone);
-    const duplicate = state.won || (isValidPhone(normalized) && hasWinningPhone(normalized));
-    $("#eligibilityPhone").value = normalized;
-    setEligibilityState({ duplicate });
-    openModal("eligibility");
-    window.setTimeout(() => $("#eligibilityPhone").focus(), 80);
   };
 
   const showResult = (won) => {
@@ -473,13 +452,9 @@
       return;
     }
 
-    const phone = normalizePhone(state.currentPhone);
-    if (!isValidPhone(phone)) {
-      openEligibilityCheck(phone);
-      return;
-    }
-    if (state.won || hasWinningPhone(phone)) {
-      openEligibilityCheck(phone);
+    if (state.won) {
+      showPage("form");
+      showToast("请先填写中奖信息");
       return;
     }
 
@@ -493,7 +468,6 @@
     const won = !state.won && (forceLocalWin || Math.random() < winProbability);
     if (won) {
       state.won = true;
-      rememberWinningPhone(phone);
     }
     saveState();
     updateDrawUI();
@@ -525,40 +499,11 @@
       return;
     }
 
-    const phone = normalizePhone(state.currentPhone);
-    if (!isValidPhone(phone) || state.won || hasWinningPhone(phone)) {
-      openEligibilityCheck(phone);
+    if (state.won) {
+      showPage("form");
+      showToast("请先填写中奖信息");
       return;
     }
-    performDraw();
-  };
-
-  const confirmEligibility = (event) => {
-    event.preventDefault();
-    if ($("#eligibilityModal .modal__panel").classList.contains("is-duplicate")) {
-      closeModal($("#eligibilityModal"));
-      return;
-    }
-    const input = $("#eligibilityPhone");
-    const phone = normalizePhone(input.value);
-    input.value = phone;
-
-    if (!isValidPhone(phone)) {
-      setEligibilityState({ error: "请输入正确的11位手机号" });
-      input.focus();
-      return;
-    }
-
-    if (state.won || hasWinningPhone(phone)) {
-      setEligibilityState({ duplicate: true });
-      input.focus();
-      return;
-    }
-
-    state.currentPhone = phone;
-    saveState();
-    syncWinnerPhoneField();
-    closeModal($("#eligibilityModal"));
     performDraw();
   };
 
@@ -620,12 +565,15 @@
     const idInput = $("#winnerId");
     const agree = $("#privacyAgree");
     const name = nameInput.value.trim();
-    const phone = normalizePhone(state.currentPhone || phoneInput.value);
+    const phone = normalizePhone(phoneInput.value);
     phoneInput.value = phone;
     const idNumber = idInput.value.trim().toUpperCase();
 
     const nameError = /^[\u4e00-\u9fa5·]{2,20}$/.test(name) ? "" : "请输入2-20位真实中文姓名";
-    const phoneError = isValidPhone(phone) ? "" : "请先返回抽奖页确认手机号";
+    const recordedForThisSubmission = state.submitted && normalizePhone(state.currentPhone) === phone;
+    const phoneError = !isValidPhone(phone)
+      ? "请输入正确的11位手机号"
+      : (hasWinningPhone(phone) && !recordedForThisSubmission ? "该手机号已提交过中奖信息" : "");
     const idError = /^(\d{15}|\d{17}[\dX])$/.test(idNumber) ? "" : "请输入正确的身份证号";
     setFieldError(nameInput, nameError);
     setFieldError(phoneInput, phoneError);
@@ -640,8 +588,12 @@
       return;
     }
 
-    const subject = "【好心情音乐会广州站】中奖信息提交";
+    if (!recordedForThisSubmission) rememberWinningPhone(phone);
+    state.currentPhone = phone;
+
+    const subject = `${IS_TEST_MODE ? "【测试数据】" : ""}【好心情音乐会广州站】中奖信息提交`;
     const body = [
+      ...(IS_TEST_MODE ? ["【测试数据：50%测试概率，不作为正式兑奖依据】", ""] : []),
       "统一阿萨姆茉莉奶绿 好心情音乐会广州站",
       "",
       `姓名：${name}`,
@@ -860,18 +812,13 @@
     $("#shareBtn").addEventListener("click", () => { beep("tap"); showPage("share"); });
     $("#shareNextBtn").addEventListener("click", () => { beep("tap"); openModal("shareGuide"); });
     $("#confirmShareBtn").addEventListener("click", claimShareChance);
-    $("#eligibilityForm").addEventListener("submit", confirmEligibility);
-    $("#eligibilityPhone").addEventListener("input", (event) => {
-      event.currentTarget.value = normalizePhone(event.currentTarget.value);
-      setEligibilityState();
-    });
     $("#winnerForm").addEventListener("submit", submitWinnerInfo);
     $("#copyWinnerInfoBtn").addEventListener("click", async () => {
       const copied = await copyText(pendingWinnerMailText);
       showToast(copied ? "中奖信息已复制，请粘贴到邮件中发送" : "复制失败，请点击“打开邮件应用”");
     });
     $$("#winnerForm input:not([type='checkbox'])").forEach((input) => input.addEventListener("input", () => {
-      if (input.id === "winnerPhone") return;
+      if (input.id === "winnerPhone") input.value = normalizePhone(input.value);
       if (input.id === "winnerId") input.value = input.value.toUpperCase().replace(/[^0-9X]/g, "");
       setFieldError(input, "");
     }));
