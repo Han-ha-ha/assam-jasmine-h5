@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260901-independent-test-flow-v34";
+  const APP_VERSION = "20260902-branded-status-icons-v35";
   const PAGE_PARAMS = new URLSearchParams(window.location.search);
   const IS_TEST_MODE = PAGE_PARAMS.get("testMode") === "1";
   const HOME_KV_VARIANT = PAGE_PARAMS.get("kv") === "vertical" ? "vertical" : "landscape";
@@ -45,7 +45,9 @@
       "assets/draw/customer-draw-product.webp",
       "assets/draw/customer-draw-slogan.webp",
       "素材3/web/scene-people-final.webp",
+      "素材3/web/hidden-bottle.webp",
       "素材3/门票图.png",
+      "assets/ui/jasmine-flower.png",
     ],
   };
 
@@ -418,6 +420,7 @@
     const title = $("#resultTitle");
     const text = $("#resultText");
     const icon = $("#resultIcon");
+    const iconImage = $("#resultIconImage");
     const ticket = $("#ticketPreview");
     const action = $("#resultActionBtn");
 
@@ -425,7 +428,9 @@
       $("#resultEyebrow").textContent = "恭喜中奖！";
       title.textContent = "好心情门票属于你";
       text.textContent = "请在24小时内填写兑奖信息";
-      icon.textContent = "★";
+      icon.dataset.variant = "win";
+      iconImage.src = "素材3/门票图.png";
+      iconImage.alt = "好心情音乐会门票";
       ticket.hidden = false;
       action.textContent = "填写中奖信息";
       action.dataset.action = "form";
@@ -435,7 +440,9 @@
       $("#resultEyebrow").textContent = "GOOD MOOD";
       title.textContent = "未中奖";
       text.textContent = state.remainingChances > 0 ? "别灰心，继续试试好手气吧" : "今日机会已用完，分享活动可额外获得1次机会";
-      icon.textContent = "✿";
+      icon.dataset.variant = "lose";
+      iconImage.src = "assets/ui/jasmine-flower.png";
+      iconImage.alt = "茉莉花";
       ticket.hidden = true;
       action.textContent = state.remainingChances > 0 ? "继续抽奖" : "知道了";
       action.dataset.action = "close";

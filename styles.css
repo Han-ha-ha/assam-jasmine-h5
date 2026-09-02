@@ -129,12 +129,27 @@ input:focus-visible {
   pointer-events: none;
 }
 
-.loading__flower {
-  font-size: 56px;
-  animation: loading-spin 1.8s linear infinite;
+.loading__product {
+  display: grid;
+  width: 68px;
+  height: 92px;
+  place-items: center;
+  animation: loading-product 1.35s ease-in-out infinite;
 }
 
-@keyframes loading-spin { to { transform: rotate(360deg); } }
+.loading__product img {
+  display: block;
+  width: 28px;
+  height: auto;
+  max-height: 92px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(32, 84, 55, .16));
+}
+
+@keyframes loading-product {
+  0%, 100% { transform: translateY(3px) scale(.97); }
+  50% { transform: translateY(-5px) scale(1.02); }
+}
 
 .loading p {
   margin: 0;
@@ -1767,6 +1782,14 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
 
 .share-icon,
 .result-icon { display: grid; width: 75px; height: 75px; place-items: center; margin: 0 auto 18px; border-radius: 50%; background: var(--green-100); color: var(--green-700); font-size: 38px; }
+.result-icon img {
+  display: block;
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+.result-icon[data-variant="win"] img { width: 94%; height: 94%; }
+.result-icon[data-variant="lose"] img { width: 84%; height: 84%; }
 .modal__panel--share p { margin: 0 0 8px; }
 .modal__panel--share small { display: block; margin-bottom: 25px; color: #7b897c; }
 
@@ -1881,8 +1904,8 @@ html[data-home-kv="vertical"] .home__vertical-panel { display: block; }
   color: white;
   text-align: center;
 }
-.modal--guide h2 { margin: 22px 0 8px; font-size: 25px; }
-.modal--guide p { margin: 0 0 26px; font-size: 13px; opacity: .82; }
+.modal--guide h2 { max-width: min(88vw, 520px); margin: 22px 0 8px; font-size: clamp(22px, 6.2vw, 31px); line-height: 1.35; }
+.modal--guide p { max-width: min(90vw, 560px); margin: 0 0 26px; padding: 0 10px; font-size: clamp(12px, 3.4vw, 15px); line-height: 1.7; opacity: .82; }
 .guide-gesture { display: grid; width: 110px; height: 110px; place-items: center; }
 .guide-gesture span { font-size: 66px; line-height: 1; filter: drop-shadow(0 8px 12px rgba(0,0,0,.25)); animation: guide-hand 1.35s ease-in-out infinite; }
 @keyframes guide-hand { 0%,100% { transform: translateY(8px) scale(.96); } 50% { transform: translateY(-6px) scale(1.05); } }

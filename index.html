@@ -8,7 +8,7 @@
     <meta name="description" content="在好心情音乐会现场找到5个茉莉奶绿，参与抽奖赢广州站电子门票。" />
     <title>找奶绿 赢门票｜好心情音乐会广州站</title>
     <link rel="icon" type="image/png" href="%E7%B4%A0%E6%9D%90/logo.png" />
-    <link rel="stylesheet" href="styles.css?v=20260901-independent-test-flow-v34" />
+    <link rel="stylesheet" href="styles.css?v=20260902-branded-status-icons-v35" />
     <script>
       var _hmt = window._hmt || [];
       (function () {
@@ -22,7 +22,9 @@
   </head>
   <body>
     <div id="loading" class="loading" aria-live="polite">
-      <div class="loading__flower" aria-hidden="true">✿</div>
+      <div class="loading__product" aria-hidden="true">
+        <img src="素材3/web/hidden-bottle.webp" alt="" />
+      </div>
       <p>好心情正在加载</p>
       <div class="loading__track"><i id="loadingBar"></i></div>
       <span id="loadingText">0%</span>
@@ -256,7 +258,6 @@
           <div class="redeem-info">
             <h3>兑奖说明</h3>
             <p>中奖后请在24小时内填写姓名及手机号</p>
-            <p>工作人员将在3个工作日内电话联系您</p>
             <p>音乐会门票为电子票，凭身份证检票入场</p>
             <p>逾期未填写信息视为自动放弃</p>
             <p>如有疑问请添加客服微信：xiaoyinjun666</p>
@@ -267,8 +268,8 @@
 
     <div id="guideModal" class="modal modal--guide" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
       <div class="guide-gesture" aria-hidden="true"><span>👆</span></div>
-      <h2 id="guideTitle">从花艺拱门进入乐园</h2>
-      <p>上下左右拖动画面探索至顶部主舞台，找到并点击人物手中5个茉莉奶绿</p>
+      <h2 id="guideTitle">找到并点击5个人物手中的茉莉奶绿</h2>
+      <p>从花艺拱门进入乐园，上下左右拖动画面探索至顶部主舞台</p>
       <button id="guideOk" class="outline-btn" type="button">知道了</button>
     </div>
 
@@ -310,7 +311,9 @@
     <div id="resultModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
       <div class="modal__mask"></div>
       <div class="modal__panel modal__panel--result">
-        <div id="resultIcon" class="result-icon">✦</div>
+        <div id="resultIcon" class="result-icon" data-variant="lose">
+          <img id="resultIconImage" src="assets/ui/jasmine-flower.png" alt="茉莉花" />
+        </div>
         <p id="resultEyebrow" class="eyebrow">GOOD MOOD</p>
         <h2 id="resultTitle">开奖结果</h2>
         <p id="resultText"></p>
@@ -344,6 +347,6 @@
 
     <audio id="bgm" src="素材3/遇见茉莉好心情_final_MMM(1).mp3" preload="none" loop></audio>
 
-  <script src="app.js?v=20260901-independent-test-flow-v34"></script>
+  <script src="app.js?v=20260902-branded-status-icons-v35"></script>
   </body>
 </html>
