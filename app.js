@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = "20260902-branded-status-icons-v35";
+  const APP_VERSION = "20260903-daily-chance-reset-v36";
   const PAGE_PARAMS = new URLSearchParams(window.location.search);
   const IS_TEST_MODE = PAGE_PARAMS.get("testMode") === "1";
   const HOME_KV_VARIANT = PAGE_PARAMS.get("kv") === "vertical" ? "vertical" : "landscape";
@@ -29,7 +29,9 @@
       },
     ],
     initialChances: 3,
-    maxEarnedChances: 40,
+    maxDrawsPerUser: 40,
+    // 测试链接仅在此时间点前保留 50% 概率；正式链接不受该配置影响。
+    testWinProbabilityEndsAt: "2026-09-04T22:00:00+08:00",
     sceneWidth: 2800,
     sceneHeight: 6000,
     loadingMinDuration: 650,
@@ -54,12 +56,22 @@
   let versionPrompted = false;
 
   const getScheduledWinProbability = (now = Date.now()) => {
-    if (IS_TEST_MODE) return 0.5;
+    if (IS_TEST_MODE) {
+      return now < Date.parse(CONFIG.testWinProbabilityEndsAt) ? 0.5 : 0;
+    }
     const activePeriod = CONFIG.winProbabilitySchedule.find(({ startAt, endAt }) => (
       now >= Date.parse(startAt) && now < Date.parse(endAt)
     ));
     return activePeriod?.probability ?? 0;
   };
+
+  function todayKey() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  }
 
   const checkAppVersion = async () => {
     try {
@@ -88,6 +100,7 @@
     remainingChances: 0,
     totalEarned: 0,
     drawCount: 0,
+    dailyChanceDate: "",
     won: false,
     lastShareDate: "",
     submitted: false,
@@ -99,8 +112,12 @@
     const source = saved && typeof saved === "object" ? saved : {};
     const found = [...new Set(Array.isArray(source.found) ? source.found.map(Number) : [])]
       .filter((id) => Number.isInteger(id) && id >= 1 && id <= 5);
-    const remainingChances = Math.max(0, Math.min(CONFIG.maxEarnedChances, Number(source.remainingChances) || 0));
-    const totalEarned = Math.max(0, Math.min(CONFIG.maxEarnedChances, Number(source.totalEarned) || 0));
+    const drawCount = Math.max(0, Math.min(CONFIG.maxDrawsPerUser, Number(source.drawCount) || 0));
+    const remainingChances = Math.max(
+      0,
+      Math.min(CONFIG.maxDrawsPerUser - drawCount, Number(source.remainingChances) || 0),
+    );
+    const totalEarned = Math.max(0, Number(source.totalEarned) || 0);
     const currentPhone = String(source.currentPhone || "").replace(/\D/g, "").slice(0, 11);
     return {
       ...defaultState(),
@@ -108,13 +125,17 @@
       found,
       remainingChances,
       totalEarned,
-      drawCount: Math.max(0, Number(source.drawCount) || 0),
+      drawCount,
       guided: Boolean(source.guided),
       chancesGranted: Boolean(source.chancesGranted),
       won: Boolean(source.won),
       submitted: Boolean(source.submitted),
       soundOn: source.soundOn !== false,
       lastShareDate: typeof source.lastShareDate === "string" ? source.lastShareDate : "",
+      // 升级旧存档时从当天开始计算，避免用户在更新瞬间被意外重置次数。
+      dailyChanceDate: typeof source.dailyChanceDate === "string" && source.dailyChanceDate
+        ? source.dailyChanceDate
+        : (source.chancesGranted ? todayKey() : ""),
       currentPhone,
     };
   };
@@ -190,12 +211,18 @@
     }
   };
 
-  const todayKey = () => {
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
+  const remainingDrawCapacity = () => Math.max(0, CONFIG.maxDrawsPerUser - state.drawCount);
+
+  // 纯前端页面无法在后台常驻运行；用户打开或回到页面时，会按手机本地日期补做每日 0 点的刷新。
+  const syncDailyChances = () => {
+    if (!state.chancesGranted) return false;
+    const today = todayKey();
+    if (state.dailyChanceDate === today) return false;
+
+    state.dailyChanceDate = today;
+    state.remainingChances = Math.min(CONFIG.initialChances, remainingDrawCapacity());
+    saveState();
+    return true;
   };
 
   const showToast = (message, duration = 1800) => {
@@ -359,8 +386,9 @@
   const grantInitialChances = () => {
     if (state.chancesGranted) return;
     state.chancesGranted = true;
-    state.remainingChances += CONFIG.initialChances;
-    state.totalEarned += CONFIG.initialChances;
+    state.dailyChanceDate = todayKey();
+    state.remainingChances = Math.min(CONFIG.initialChances, remainingDrawCapacity());
+    state.totalEarned += state.remainingChances;
     saveState();
   };
 
@@ -390,6 +418,7 @@
   };
 
   const updateDrawUI = () => {
+    syncDailyChances();
     $("#remainingCount").textContent = String(state.remainingChances);
     const sharedToday = state.lastShareDate === todayKey();
     const shareStatus = $("#shareStatus");
@@ -402,6 +431,7 @@
   };
 
   const updateShareUI = () => {
+    syncDailyChances();
     const sharedToday = state.lastShareDate === todayKey();
     const nextButton = $("#shareNextBtn");
     if (!nextButton) return;
@@ -439,7 +469,11 @@
     } else {
       $("#resultEyebrow").textContent = "GOOD MOOD";
       title.textContent = "未中奖";
-      text.textContent = state.remainingChances > 0 ? "别灰心，继续试试好手气吧" : "今日机会已用完，分享活动可额外获得1次机会";
+      text.textContent = state.remainingChances > 0
+        ? "别灰心，继续试试好手气吧"
+        : (remainingDrawCapacity() === 0
+          ? "本次活动参与次数已达40次上限"
+          : "今日机会已用完，分享活动可额外获得1次机会");
       icon.dataset.variant = "lose";
       iconImage.src = "assets/ui/jasmine-flower.png";
       iconImage.alt = "茉莉花";
@@ -454,8 +488,9 @@
 
   const performDraw = () => {
     if (isDrawing) return;
+    syncDailyChances();
     if (state.remainingChances <= 0) {
-      showToast("抽奖机会已用完，可以分享获得额外机会");
+      showToast(remainingDrawCapacity() === 0 ? "已达到40次抽奖上限" : "抽奖机会已用完，可以分享获得额外机会");
       return;
     }
 
@@ -501,8 +536,9 @@
 
   const requestDraw = () => {
     if (isDrawing) return;
+    syncDailyChances();
     if (state.remainingChances <= 0) {
-      showToast("抽奖机会已用完，可以分享获得额外机会");
+      showToast(remainingDrawCapacity() === 0 ? "已达到40次抽奖上限" : "抽奖机会已用完，可以分享获得额外机会");
       return;
     }
 
@@ -515,14 +551,15 @@
   };
 
   const claimShareChance = () => {
+    syncDailyChances();
     if (state.lastShareDate === todayKey()) {
       showToast("今天已经获得过分享奖励了");
       closeModal($("#shareGuideModal"));
       showPage("draw");
       return;
     }
-    if (state.totalEarned >= CONFIG.maxEarnedChances) {
-      showToast("已达到40次参与机会的上限");
+    if (state.remainingChances >= remainingDrawCapacity()) {
+      showToast("已达到40次抽奖上限");
       closeModal($("#shareGuideModal"));
       showPage("draw");
       return;
